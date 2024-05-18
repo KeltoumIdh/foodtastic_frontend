@@ -37,30 +37,40 @@ export const shopLoader = async ({ request }) => {
     price: params.price ?? "all",
     search: params.search ?? "",
     in_stock: params.stock === undefined ? false : true,
-    current_page: Number(params.page) || 1
+    current_page: Number(params.page) || 1,
   };
 
   // set params in get apis
-  let parameter = (`?_start=${(filterObj.current_page - 1) * 10}&_limit=10`) + // pre defined that limit of response is 10 & page number count 1
-    (filterObj.brand !== 'all' ? `&brandName=${filterObj.brand}` : "") +
-    (filterObj.category !== 'all' ? `&category=${filterObj.category}` : "") +
-    (filterObj.gender !== 'all' ? `&gender=${filterObj.gender}` : ``) +
-    ((filterObj.search != '') ? `&q=${encodeURIComponent(filterObj.search)}` : ``) +
+  let parameter =
+    `?_start=${(filterObj.current_page - 1) * 10}&_limit=10` + // pre defined that limit of response is 10 & page number count 1
+    (filterObj.brand !== "all" ? `&brandName=${filterObj.brand}` : "") +
+    (filterObj.category !== "all" ? `&category=${filterObj.category}` : "") +
+    (filterObj.gender !== "all" ? `&gender=${filterObj.gender}` : ``) +
+    (filterObj.search != ""
+      ? `&q=${encodeURIComponent(filterObj.search)}`
+      : ``) +
     (filterObj.order ? `&_sort=price.current.value` : "") + // Check if the order exists, then sort it in ascending order. After that, the API response will be modified if descending order or any other filter is selected.
-    (filterObj.in_stock ? (`&isInStock`) : '') +
-    (filterObj.price !== 'all' ? `&price.current.value_lte=${filterObj.price}` : ``) +
-    (filterObj.date ? `&productionDate=${filterObj.date}` : ``) // It only matched exact for the date and time. 
+    (filterObj.in_stock ? `&isInStock` : "") +
+    (filterObj.price !== "all"
+      ? `&price.current.value_lte=${filterObj.price}`
+      : ``) +
+    (filterObj.date ? `&productionDate=${filterObj.date}` : ``); // It only matched exact for the date and time.
 
   try {
-    const response = await axios(
-      `http://localhost:8080/products${parameter}`
-
-    );
-    let data = response.data;
+    const response = await axios(`/api/products${parameter}`);
+    let data = response?.data ?? [];
 
     // sorting in descending order
-    if (filterObj.order && !(filterObj.order === "asc" || filterObj.order === "price low")) data.sort((a, b) => b.price.current.value - a.price.current.value)
-    return { productsData: data, productsLength: data.length, page: filterObj.current_page };
+    if (
+      filterObj.order &&
+      !(filterObj.order === "asc" || filterObj.order === "price low")
+    )
+      data.sort((a, b) => b.price.current.value - a.price.current.value);
+    return {
+      productsData: data,
+      productsLength: data?.length,
+      page: filterObj.current_page,
+    };
   } catch (error) {
     console.log(error.response);
   }
@@ -69,31 +79,30 @@ export const shopLoader = async ({ request }) => {
   return null;
 };
 
-
-
-
 const Shop = () => {
-
   const productLoaderData = useLoaderData();
-
 
   return (
     <>
       <SectionTitle title="Shop" path="Home | Shop" />
       <div className="max-w-7xl mx-auto mt-5">
         <Filters />
-        {productLoaderData.productsData.length === 0 && <h2 className="text-accent-content text-center text-4xl my-10">No products found for this filter</h2>}
+        {productLoaderData?.productsData?.length === 0 && (
+          <h2 className="text-accent-content text-center text-4xl my-10">
+            No products found for this filter
+          </h2>
+        )}
         <div className="grid grid-cols-4 px-2 gap-y-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 shop-products-grid">
-          {productLoaderData.productsData.length !== 0 &&
-            productLoaderData.productsData.map((product) => (
+          {productLoaderData?.productsData?.length !== 0 &&
+            productLoaderData?.productsData?.map((product) => (
               <ProductElement
                 key={nanoid()}
-                id={product.id}
-                title={product.name}
-                image={product.imageUrl}
-                rating={product.rating}
-                price={product.price.current.value}
-                brandName={product.brandName}
+                id={product?.id}
+                title={product?.name}
+                image={product?.imageUrl}
+                rating={product?.rating}
+                price={product?.price?.current?.value}
+                brandName={product?.brandName}
               />
             ))}
         </div>

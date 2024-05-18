@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { SectionTitle } from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import axios from "../lib/axios";
 import { toast } from "react-toastify";
 import { store } from "../store";
 import { calculateTotals, clearCart } from "../features/cart/cartSlice";
@@ -16,7 +16,7 @@ const ThankYou = () => {
 
   const saveToOrderHistory = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/orders", {
+      const response = await axios.post("/orders", {
         userId: localStorage.getItem("id"),
         orderStatus: "in progress",
         subtotal: total,
@@ -40,7 +40,6 @@ const ThankYou = () => {
       navigate("/");
     }
   }, []);
-
 
   return (
     <>

@@ -30,12 +30,12 @@ const Header = () => {
   const fetchWishlist = async () => {
     if(loginState){
       try {
-        const getResponse = await axios.get(`http://localhost:8080/user/${localStorage.getItem("id")}`);
+        const getResponse = await axios.get(`http://localhost:8000/user/${localStorage.getItem("id")}`);
         const userObj = getResponse.data;
-  
+
         store.dispatch(updateWishlist({userObj}));
-        
-       
+
+
       } catch (error) {
         console.error(error);
       }
@@ -50,7 +50,7 @@ const Header = () => {
     setIsLoggedIn(loginState);
 
       fetchWishlist();
-    
+
   }, [loginState]);
 
   return (
@@ -193,7 +193,7 @@ const Header = () => {
         <div className="drawer">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
-  
+
             {/* Page content here */}
             <label htmlFor="my-drawer" className="btn drawer-button">
               <HiMiniBars3BottomLeft className="text-4xl" />
@@ -205,7 +205,7 @@ const Header = () => {
               aria-label="close sidebar"
               className="drawer-overlay"
             ></label>
-                    
+
             <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content mt-4">
             <label htmlFor="my-drawer" className="btn drawer-button">
             <FaWindowClose className="text-3xl ml-auto" />

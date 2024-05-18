@@ -3,8 +3,8 @@ import { SectionTitle } from "../components";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { nanoid } from "nanoid";
+import axios from "../lib/axios";
 
 const OrderHistory = () => {
   // cancelled, in progress, delivered
@@ -15,7 +15,7 @@ const OrderHistory = () => {
   const getOrderHistory = async () => {
     try {
       // saljemo get(default) request
-      const response = await axios.get("http://localhost:8080/orders");
+      const response = await axios.get("/orders");
       const data = response.data;
       setOrders(
         data.filter((order) => order.userId === localStorage.getItem("id"))
@@ -79,17 +79,25 @@ const OrderHistory = () => {
                         {order.cartItems.map((product, counter) => (
                           <tr className="text-accent-content" key={nanoid()}>
                             <th>{counter + 1}</th>
-                            <th><img src={`https://${product.image}`} alt="" className="w-10" /></th>
+                            <th>
+                              <img
+                                src={`https://${product.image}`}
+                                alt=""
+                                className="w-10"
+                              />
+                            </th>
                             <td>{product.title}</td>
                             <td>{product.selectedSize}</td>
                             <td>{product.amount}</td>
-                            <td>${(product.price * product.amount).toFixed(2)}</td>
+                            <td>
+                              ${(product.price * product.amount).toFixed(2)}
+                            </td>
                           </tr>
                         ))}
                         <tr>
                           <td colSpan="5" className="text-center">
                             <h4 className="text-md text-accent-content">
-                              Subtotal: ${ Math.round(order?.subtotal) }
+                              Subtotal: ${Math.round(order?.subtotal)}
                             </h4>
                           </td>
                         </tr>
@@ -103,14 +111,18 @@ const OrderHistory = () => {
                         <tr>
                           <td colSpan="5" className="text-center">
                             <h3 className="text-md text-accent-content">
-                              Tax: 20%: ${ Math.round(order?.subtotal / 5) }
+                              Tax: 20%: ${Math.round(order?.subtotal / 5)}
                             </h3>
                           </td>
                         </tr>
                         <tr>
                           <td colSpan="5" className="text-center">
                             <h3 className="text-xl text-accent-content">
-                              - Order Total: ${ Math.round(order?.subtotal + 50 + (order?.subtotal / 5)) } -
+                              - Order Total: $
+                              {Math.round(
+                                order?.subtotal + 50 + order?.subtotal / 5
+                              )}{" "}
+                              -
                             </h3>
                           </td>
                         </tr>

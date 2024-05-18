@@ -2,13 +2,11 @@ import React, { useEffect } from "react";
 import "../styles/Landing.css";
 import { Hero, ProductElement, Stats } from "../components";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../lib/axios";
 
 export const landingLoader = async () => {
-  const response = await axios(
-    `http://localhost:8080/products?_page=1&_limit=8`
-  );
-  const data = response.data;
+  const response = await axios.get(`/api/products?_page=1&_limit=8`);
+  const data = response?.data;
 
   return { products: data };
 };
@@ -29,12 +27,12 @@ const Landing = () => {
         <div className="selected-products-grid max-w-7xl mx-auto">
           {products.map((product) => (
             <ProductElement
-              key={product.id}
-              id={product.id}
-              title={product.name}
-              image={product.imageUrl}
-              rating={product.rating}
-              price={product.price.current.value}
+              key={product?.id}
+              id={product?.id}
+              title={product?.name}
+              image={product?.imageUrl}
+              rating={product?.rating}
+              price={product?.price?.current?.value}
             />
           ))}
         </div>

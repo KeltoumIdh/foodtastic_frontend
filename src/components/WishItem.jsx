@@ -12,25 +12,25 @@ const WishItem = ({ item, counter }) => {
 
     const removeFromWishlistHandler = async (product) => {
       const getResponse = await axios.get(
-        `http://localhost:8080/user/${localStorage.getItem("id")}`
+        `http://localhost:8000/user/${localStorage.getItem("id")}`
       );
       const userObj = getResponse.data;
-  
+
       userObj.userWishlist = userObj.userWishlist || [];
-  
+
       const newWishlist = userObj.userWishlist.filter(item => product.id !== item.id);
-  
+
       userObj.userWishlist = newWishlist;
-  
+
       const postResponse = await axios.put(
-        `http://localhost:8080/user/${localStorage.getItem("id")}`,
+        `http://localhost:8000/user/${localStorage.getItem("id")}`,
         userObj
       );
-  
+
       // Dispatch the addToWishlist action with the product data
       store.dispatch(removeFromWishlist({ userObj }));
       toast.success("Product removed from the wishlist!");
-  
+
     }
   return (
     <tr className="hover cursor-pointer">

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SectionTitle } from "../components";
 import { nanoid } from "nanoid";
 import { toast } from "react-toastify";
+import axios from "../lib/axios";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -67,7 +68,7 @@ const Register = () => {
     };
 
     if (isValidate()) {
-      fetch("http://localhost:8080/user", {
+      fetch("http://localhost:8000/user", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(regObj),
