@@ -15,6 +15,7 @@ const Landing = () => {
   const { products } = useLoaderData();
   const navigate = useNavigate();
 
+
   return (
     <main>
       <Hero />
@@ -25,16 +26,18 @@ const Landing = () => {
           Trending Products
         </h2>
         <div className="selected-products-grid max-w-7xl mx-auto">
-          {products.map((product) => (
-            <ProductElement
-              key={product?.id}
-              id={product?.id}
-              title={product?.name}
-              image={product?.imageUrl}
-              rating={product?.rating}
-              price={product?.price?.current?.value}
-            />
-          ))}
+          {products?.length == 0
+            ? null
+            : products?.map((product) => (
+                <ProductElement
+                  key={product?.id}
+                  id={product?.id}
+                  title={product?.name}
+                  image={product?.imageUrl}
+                  rating={product?.rating}
+                  price={product?.price?.current?.value}
+                />
+              ))}
         </div>
       </div>
     </main>

@@ -3,6 +3,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    './node_modules/@shadcn/ui/**/*.js',
   ],
   theme: {
     themes: ["dark", "winter"],

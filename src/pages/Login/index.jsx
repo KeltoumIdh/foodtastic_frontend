@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SectionTitle } from "../components";
+import { SectionTitle } from "../../components";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { store } from "../store";
-import { loginUser, logoutUser } from "../features/auth/authSlice";
+import { store } from "../../store";
+import { loginUser, logoutUser } from "../../features/auth/authSlice";
+import axios from "../../lib/axios";
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -32,25 +33,44 @@ const Login = () => {
     }
     return isProceed;
   };
-
   const proceedLogin = (e) => {
     e.preventDefault();
+
     if (isValidate()) {
-      fetch("http://localhost:8000/user")
-        .then((res) => res.json())
+      const loginObj = { email, password };
+
+      axios.post("/api/user/login", loginObj)
         .then((res) => {
-          let data = res;
-          const foundUser = data.filter(
-            (item) => item.email === email && item.password === password
-          );
-          if (foundUser[0]) {
-            toast.success("Login successful");
-            localStorage.setItem("id", foundUser[0].id);
-            store.dispatch(loginUser());
-            navigate("/");
-          } else {
-            toast.warn("Email or password is incorrect");
-          }
+          toast.success("Login Successful");
+          const token = res.data.token;
+
+          // Save token to localStorage
+          localStorage.setItem("authToken", token);
+
+          // Fetch user data with the token
+          axios.get("/api/users", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            const users = res.data.users;
+            console.log('users', users);
+
+            // Find the user that matches the email
+            const foundUser = users.find(user => user.email === email );
+
+            if (foundUser) {
+              localStorage.setItem("id", foundUser.id);
+              store.dispatch(loginUser());
+              navigate("/");
+            } else {
+              toast.warn("Email or password is incorrect");
+            }
+          })
+          .catch((err) => {
+            toast.error("Failed to fetch user data: " + err.message);
+          });
         })
         .catch((err) => {
           toast.error("Login failed due to: " + err.message);
@@ -58,13 +78,43 @@ const Login = () => {
     }
   };
 
+
+
+  // const proceedLogin = (e) => {
+  //   e.preventDefault();
+  //   if (isValidate()) {
+  //     axios.post("/api/user/register")
+  //       .then((res) => res.json())
+  //       .then((res) => {
+  //         let data = res;
+  //         const foundUser = data.filter(
+  //           (item) => item.email === email && item.password === password
+  //         );
+  //         if (foundUser[0]) {
+  //           toast.success("Login successful");
+  //           localStorage.setItem("id", foundUser[0].id);
+  //           store.dispatch(loginUser());
+  //           navigate("/");
+  //         } else {
+  //           toast.warn("Email or password is incorrect");
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         toast.error("Login failed due to: " + err.message);
+  //       });
+  //   }
+  // };
+
   return (
     <>
       <SectionTitle title="Login" path="Home | Login" />
       <div className="flex flex-col justify-center sm:py-12">
         <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
           <div className="bg-dark border border-gray-600 shadow w-full rounded-lg divide-y divide-gray-200">
-            <form className="px-5 py-7" onSubmit={proceedLogin}>
+            <form
+              className="px-5 py-7"
+              onSubmit={proceedLogin}
+            >
               <label className="font-semibold text-sm pb-1 block text-accent-content">
                 E-mail
               </label>
@@ -120,6 +170,4 @@ const Login = () => {
       </div>
     </>
   );
-};
-
-export default Login;
+}

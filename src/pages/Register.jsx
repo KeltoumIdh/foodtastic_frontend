@@ -23,19 +23,10 @@ const Register = () => {
     if (name.length === 0) {
       isProceed = false;
       errorMessage = "Please enter the value in username field";
-    } else if (lastname.length === 0) {
-      isProceed = false;
-      errorMessage = "Please enter the value in lastname field";
-    } else if (email.length === 0) {
+    }  else if (email.length === 0) {
       isProceed = false;
       errorMessage = "Please enter the value in email field";
-    } else if (phone.length < 4) {
-      isProceed = false;
-      errorMessage = "Phone must be longer than 3 characters";
-    } else if (adress.length < 4) {
-      isProceed = false;
-      errorMessage = "Adress must be longer than 3 characters";
-    } else if (password.length < 6) {
+    }  else if (password.length < 6) {
       isProceed = false;
       errorMessage = "Please enter a password longer than 5 characters";
     } else if (confirmPassword.length < 6) {
@@ -59,20 +50,15 @@ const Register = () => {
     let regObj = {
       id: nanoid(),
       name,
-      lastname,
       email,
-      phone,
       adress,
       password,
       userWishlist: [],
     };
 
     if (isValidate()) {
-      fetch("http://localhost:8000/user", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(regObj),
-      })
+      axios
+        .post("/api/user/register", regObj)
         .then((res) => {
           toast.success("Registration Successful");
           navigate("/login");
@@ -99,16 +85,7 @@ const Register = () => {
                 onChange={(e) => setName(e.target.value)}
                 required={true}
               />
-              <label className="font-semibold text-sm pb-1 block text-accent-content">
-                Lastname
-              </label>
-              <input
-                type="text"
-                className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
-                required={true}
-              />
+
               <label className="font-semibold text-sm pb-1 block text-accent-content">
                 E-mail
               </label>
@@ -119,18 +96,9 @@ const Register = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required={true}
               />
+
               <label className="font-semibold text-sm pb-1 block text-accent-content">
-                Phone
-              </label>
-              <input
-                type="tel"
-                className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required={true}
-              />
-              <label className="font-semibold text-sm pb-1 block text-accent-content">
-                Adress
+                City
               </label>
               <input
                 type="text"

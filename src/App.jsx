@@ -5,7 +5,6 @@ import {
   Contact,
   HomeLayout,
   Landing,
-  Login,
   Register,
   Shop,
   SingleProduct,
@@ -13,12 +12,15 @@ import {
   Profile,
   Search,
   ThankYou,
-  OrderHistory
+  OrderHistory,
+  Login,
 } from "./pages";
 import { landingLoader } from "./pages/Landing";
 import { singleProductLoader } from "./pages/SingleProduct";
 import { shopLoader } from "./pages/Shop";
 import { ToastContainer } from "react-toastify";
+import DahboardLayout from "./pages/admin/DahboardLayout";
+import Dashboard from "./pages/admin/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +35,7 @@ const router = createBrowserRouter([
       {
         path: "shop",
         element: <Shop />,
-        loader: shopLoader
-
+        loader: shopLoader,
       },
       {
         path: "shop/product/:id",
@@ -74,17 +75,82 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path:"search",
-        element: <Search />
+        path: "search",
+        element: <Search />,
       },
       {
-        path:"thank-you",
-        element: <ThankYou />
+        path: "thank-you",
+        element: <ThankYou />,
       },
       {
-        path:"order-history",
-        element: <OrderHistory />
-      }
+        path: "order-history",
+        element: <OrderHistory />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DahboardLayout />,
+    children: [
+      // {
+      //   index: true,
+      //   element: <Landing />,
+      //   loader: landingLoader,
+      // },
+      {
+        path: "admin",
+        element: <Dashboard />,
+        loader: shopLoader,
+      },
+      // {
+      //   path: "shop/product/:id",
+      //   element: <SingleProduct />,
+      //   loader: singleProductLoader,
+      // },
+      // {
+      //   path: "about",
+      //   element: <About />,
+      // },
+      // {
+      //   path: "login",
+      //   element: <Login />,
+      // },
+      // {
+      //   path: "register",
+      //   element: <Register />,
+      // },
+      // {
+      //   path: "contact",
+      //   element: <Contact />,
+      // },
+      // {
+      //   path: "about-us",
+      //   element: <About />,
+      // },
+      // {
+      //   path: "cart",
+      //   element: <Cart />,
+      // },
+      // {
+      //   path: "wishlist",
+      //   element: <Wishlist />,
+      // },
+      // {
+      //   path: "user-profile",
+      //   element: <Profile />,
+      // },
+      // {
+      //   path: "search",
+      //   element: <Search />,
+      // },
+      // {
+      //   path: "thank-you",
+      //   element: <ThankYou />,
+      // },
+      // {
+      //   path: "order-history",
+      //   element: <OrderHistory />,
+      // },
     ],
   },
 ]);
