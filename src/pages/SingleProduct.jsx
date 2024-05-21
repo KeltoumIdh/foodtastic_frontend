@@ -21,13 +21,14 @@ import {
 } from "../features/wishlist/wishlistSlice";
 import { toast } from "react-toastify";
 import { store } from "../store";
+import { isNull } from "../lib/utils";
 
 export const singleProductLoader = async ({ params }) => {
   const { id } = params;
 
-  const response = await axios.get(`/products/${id}`);
+  const response = !isNull(id) ? await axios.get(`/products/${id}`) : {};
 
-  return { productData: response.data };
+  return { productData: response.data ?? [] };
 };
 
 const SingleProduct = () => {

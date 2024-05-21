@@ -23,7 +23,7 @@ const Profile = () => {
 
   const getUserData = async () => {
     try {
-      const response = await axios.get(`/user/${id}`);
+      const response = await axios.get(`/api/user/${id}`);
       const data = response.data;
       setUserFormData({
         name: data.name,
@@ -50,11 +50,11 @@ const Profile = () => {
   const updateProfile = async (e) => {
     e.preventDefault();
     try {
-      const getResponse = await axios(`http://localhost:8000/user/${id}`);
+      const getResponse = await axios.get(`/api/user/${id}`);
       const userObj = getResponse.data;
 
       // saljemo get(default) request
-      const putResponse = await axios.put(`http://localhost:8000/user/${id}`, {
+      const putResponse = await axios.put(`/api/user/${id}`, {
         id: id,
         name: userFormData.name,
         lastname: userFormData.lastname,
@@ -94,7 +94,7 @@ const Profile = () => {
             />
           </div>
 
-          <div className="form-control w-full lg:max-w-xs">
+          {/* <div className="form-control w-full lg:max-w-xs">
             <label className="label">
               <span className="label-text">Your Lastname</span>
             </label>
@@ -107,7 +107,7 @@ const Profile = () => {
                 setUserFormData({ ...userFormData, lastname: e.target.value });
               }}
             />
-          </div>
+          </div> */}
 
           <div className="form-control w-full lg:max-w-xs">
             <label className="label">
@@ -124,7 +124,7 @@ const Profile = () => {
             />
           </div>
 
-          <div className="form-control w-full lg:max-w-xs">
+          {/* <div className="form-control w-full lg:max-w-xs">
             <label className="label">
               <span className="label-text">Your Phone</span>
             </label>
@@ -137,7 +137,7 @@ const Profile = () => {
                 setUserFormData({ ...userFormData, phone: e.target.value });
               }}
             />
-          </div>
+          </div> */}
 
           <div className="form-control w-full lg:max-w-xs">
             <label className="label">
@@ -154,7 +154,7 @@ const Profile = () => {
             />
           </div>
 
-          <div className="form-control w-full lg:max-w-xs">
+          {/* <div className="form-control w-full lg:max-w-xs">
             <label className="label">
               <span className="label-text">Your Password</span>
             </label>
@@ -167,7 +167,7 @@ const Profile = () => {
                 setUserFormData({ ...userFormData, password: e.target.value });
               }}
             />
-          </div>
+          </div> */}
         </div>
         <button
           className="btn btn-lg bg-blue-600 hover:bg-blue-500 text-white mt-10"
