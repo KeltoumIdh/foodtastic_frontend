@@ -127,22 +127,22 @@ const HeaderAdmin = () => {
               </label>
               {/* Sidebar content here */}
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="/admin">
+                <NavLink className="text-accent-content" to="admin">
                 Dashboard
                 </NavLink>
               </li>
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="/admin/products">
+                <NavLink className="text-accent-content" to="products">
                 Products
                 </NavLink>
               </li>
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="/admin/categories">
+                <NavLink className="text-accent-content" to="categories">
                 Categories
                 </NavLink>
               </li>
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="/admin/producers">
+                <NavLink className="text-accent-content" to="producers">
                 Producers
                 </NavLink>
               </li>
@@ -156,13 +156,13 @@ const HeaderAdmin = () => {
           <NavLink className="text-accent-content" to="admin">
             Dashboard
           </NavLink>
-          <NavLink className="text-accent-content" to="/admin/products">
+          <NavLink className="text-accent-content" to="products">
             Products
           </NavLink>
-          <NavLink className="text-accent-content" to="/admin/categories">
+          <NavLink className="text-accent-content" to="categories">
             Categories
           </NavLink>
-          <NavLink className="text-accent-content" to="/admin/producers">
+          <NavLink className="text-accent-content" to="producers">
             Producers
           </NavLink>
 

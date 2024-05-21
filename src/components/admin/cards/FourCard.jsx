@@ -19,7 +19,7 @@ export const FourCard = () => {
   useEffect(() => {
     (async () => {
         try {
-            const response = await axios.get('/total/product');
+            const response = await axios.get('/api/total/product');
             setTotalP(response.data.total);
             console.log(response.data.total);
         } catch (error) {
@@ -31,7 +31,7 @@ export const FourCard = () => {
 useEffect(() => {
   (async () => {
     try {
-        const response = await axiosUser.get('/total/user');
+        const response = await axios.get('/api/total/user');
         setTotalU(response.data.total);
         console.log(response.data.total);
     } catch (error) {
@@ -43,7 +43,7 @@ useEffect(() => {
   useEffect(() => {
     (async () => {
         try {
-            const response = await axiosUser.get('/total/order');
+            const response = await axios.get('/api/total/order');
             setTotalO(response.data.total);
             console.log(response.data.total);
         } catch (error) {
@@ -55,7 +55,7 @@ useEffect(() => {
 useEffect(() => {
   (async () => {
     try {
-        const response = await axiosUser.get('/total/client');
+        const response = await axios.get('/api/total/client');
         setTotalC(response.data.total);
         console.log(response.data.total);
     } catch (error) {

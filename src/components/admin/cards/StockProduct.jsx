@@ -15,7 +15,7 @@ export function StockCard() {
           useEffect(() => {
               const fetchAvailableProducts = async () => {
                   try {
-                      const response = await axios.get('/stock/product');
+                      const response = await axios.get('/api/stock/product');
                       setProducts(response.data);
                       console.log('stock', response.data)
                   } catch (error) {

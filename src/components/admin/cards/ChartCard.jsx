@@ -43,7 +43,7 @@ export default function ChartCard() {
     useEffect(() => {
         const fetchTopSellingProducts = async () => {
             try {
-                const response = await axios.get('/top/product');
+                const response = await axios.get('/api/top/product');
                 setProducts(response.data);
             } catch (error) {
                 console.error('Erreur lors de la récupération des produits les plus vendus :', error);

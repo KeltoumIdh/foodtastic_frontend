@@ -23,7 +23,7 @@ export function ListCard() {
   React.useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get("/credit/clients");
+        const response = await axios.get("/api/credit/clients");
         if (response.status === 200) {
           setClients(response.data);
           console.log("clients", response.data);

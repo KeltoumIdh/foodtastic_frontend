@@ -21,6 +21,13 @@ import { shopLoader } from "./pages/Shop";
 import { ToastContainer } from "react-toastify";
 import DahboardLayout from "./pages/admin/DahboardLayout";
 import Dashboard from "./pages/admin/Dashboard";
+import Products from "./pages/admin/products/Products";
+import ProductsAdd from "./pages/admin/products/ProductsAdd";
+import ProductsEdit from "./pages/admin/products/ProductEdit";
+import Categories from "./pages/admin/categories/Categories";
+import CategoriesAdd from "./pages/admin/categories/CategoriesAdd";
+import CategoryEdit from "./pages/admin/categories/CategoryEdit";
+import Producers from "./pages/admin/producers/Producers";
 
 const router = createBrowserRouter([
   {
@@ -102,11 +109,52 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         loader: shopLoader,
       },
-      // {
-      //   path: "shop/product/:id",
-      //   element: <SingleProduct />,
-      //   loader: singleProductLoader,
-      // },
+      {
+        path: "products",
+        element: <Products />,
+        loader: shopLoader,
+      },
+      {
+        path: "products/add",
+        element: <ProductsAdd />,
+        loader: shopLoader,
+      },
+      {
+        path: "products/edit/:id",
+        element: <ProductsEdit />,
+        loader: shopLoader,
+      },
+
+      {
+        path: "categories",
+        element: <Categories />,
+        loader: shopLoader,
+      },
+      {
+        path: "categories/add",
+        element: <CategoriesAdd />,
+        loader: singleProductLoader,
+      },
+      {
+        path: "categories/edit/:id",
+        element: <CategoryEdit />,
+        loader: singleProductLoader,
+      },
+      {
+        path: "producers",
+        element: <Producers />,
+        loader: shopLoader,
+      },
+      {
+        path: "producers/add",
+        element: <producersAdd />,
+        loader: singleProductLoader,
+      },
+      {
+        path: "producers/edit/:id",
+        element: <CategoryEdit />,
+        loader: singleProductLoader,
+      },
       // {
       //   path: "about",
       //   element: <About />,
