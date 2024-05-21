@@ -6,11 +6,11 @@ import { Loader } from "lucide-react";
 import { useToast } from "../../../components/ui/use-toast.js";
 import axios from "../../../lib/axios.jsx";
 
-export default function ProductEdit() {
+export default function ProducerEdit() {
     const { id } = useParams();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [product, setProduct] = useState({
+  const [producer, setProducer] = useState({
     name: "",
     categorie: "",
     producer: "",
@@ -26,16 +26,16 @@ export default function ProductEdit() {
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProducer = async () => {
       try {
-        const response = await axios.post(`/api/products/edit/${id}`);
+        const response = await axios.post(`/api/producers/edit/${id}`);
         if (response.status === 200) {
-          setProduct(response.data);
+          setProducer(response.data);
         } else {
-          throw new Error("Failed to fetch product data");
+          throw new Error("Failed to fetch producer data");
         }
       } catch (error) {
-        console.error("Error fetching product data:", error);
+        console.error("Error fetching producer data:", error);
       }
     };
 
@@ -52,7 +52,7 @@ export default function ProductEdit() {
       }
     };
 
-    fetchProduct();
+    fetchProducer();
     fetchOptions();
   }, [id]);
 
@@ -63,8 +63,8 @@ export default function ProductEdit() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
+    setProducer((prevProducer) => ({
+      ...prevProducer,
       [name]: value,
     }));
   };
@@ -79,20 +79,20 @@ export default function ProductEdit() {
       });
       formData.append("image", newImage);
 
-      const response = await axios.post(`/api/products/update/${id}`, formData);
+      const response = await axios.post(`/api/producers/update/${id}`, formData);
 
       if (response.status === 200) {
         toast({
           title: "Success",
-          description: "Product updated successfully!",
+          description: "Producer updated successfully!",
         });
-        navigate("/products");
+        navigate("/producers");
       }
     } catch (error) {
-      console.error("Error updating product:", error);
+      console.error("Error updating producer:", error);
       toast({
         title: "Error",
-        description: "Failed to update product. Please try again.",
+        description: "Failed to update producer. Please try again.",
         status: "error",
       });
     } finally {
@@ -103,7 +103,7 @@ export default function ProductEdit() {
   return (
     <>
       <div className="flex items-center p-2">
-        <Link to={"/products"} className="mr-2">
+        <Link to={"/producers"} className="mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -130,7 +130,7 @@ export default function ProductEdit() {
           </label>
           <input
             placeholder="Nom"
-            value={product.name}
+            value={producer.name}
             onChange={handleChange}
             name="name"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
@@ -142,7 +142,7 @@ export default function ProductEdit() {
             Categorie
           </label>
           <select
-            value={product.categorie}
+            value={producer.categorie}
             onChange={handleChange}
             name="categorie"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
@@ -161,7 +161,7 @@ export default function ProductEdit() {
             Producer
           </label>
           <select
-            value={product.producer}
+            value={producer.producer}
             onChange={handleChange}
             name="producer"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
@@ -182,7 +182,7 @@ export default function ProductEdit() {
           <input
             type="number"
             placeholder="Price"
-            value={product.price}
+            value={producer.price}
             onChange={handleChange}
             name="price"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
@@ -195,7 +195,7 @@ export default function ProductEdit() {
           </label>
           <input
             placeholder="Quantity"
-            value={product.quantity_available}
+            value={producer.quantity_available}
             onChange={handleChange}
             name="quantity_available"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"

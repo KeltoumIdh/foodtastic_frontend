@@ -20,73 +20,57 @@ import {
 } from "../../../components/ui/pagination";
 
 import { Button } from "../../../components/ui/button";
+// import {
+//     Avatar,
+//     AvatarImage,
+//     AvatarFallback,
+// } from "../../components/ui/avatar";
+// import { Image } from "@radix-ui/react-avatar";
+// import { backEndUrl } from "@/helpers/utils";
 import axios from "../../../lib/axios";
 
-function Producers() {
-  const [categories, setCategories] = useState([]);
-  const [producers, setProducers] = useState([]);
+function Cities() {
   const [cities, setCities] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [totalProducers, setTotalProducers] = useState(0);
+  const [totalCities, setTotalCities] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   const handleSearch = () => {
     console.log("Search Query2:", searchQuery);
-    getProducers(0, rowsPerPage, searchQuery, searchStatus);
+    getCities(0, rowsPerPage, searchQuery, searchStatus);
   };
-
   const handleChangeSearch = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const getProducers = async (page, perPage, query = "", status = "") => {
+  const getCities = async (page, perPage, query = "", status = "") => {
     try {
-      const res = await axios.get("/api/producers", {
+      const res = await axios.get("/api/cities", {
         params: {
           page: page + 1,
           per_page: perPage,
-          query: query,
-          status: status || "",
+          query: query, // Use consistent naming (either 'query' or 'search')
+          status: status || "", // Ensure status is set to an empty string if not provided
         },
       });
 
       const data = res?.data ?? [];
       const total = res.data?.total_pages ?? 0;
-      const totalProducersCount = res.data?.total ?? 0;
+      const totalCitiesCount = res.data?.total ?? 0;
 
-      setProducers(data);
+      setCities(data);
       setTotalPages(total);
-      setTotalProducers(totalProducersCount);
-    } catch (err) {
-      console.log("err", err);
-    }
-  };
-
-  const getCities = async () => {
-    try {
-      const res = await axios.get("/api/cities");
-      setCities(res.data);
-    } catch (err) {
-      console.log("err", err);
-    }
-  };
-
-  const getCategories = async () => {
-    try {
-      const res = await axios.get("/api/categories");
-      setCategories(res.data);
+      setTotalCities(totalCitiesCount);
     } catch (err) {
       console.log("err", err);
     }
@@ -94,76 +78,70 @@ function Producers() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/producers/delete/${id}`);
-      setProducers((prevProducers) =>
-        prevProducers.filter((producer) => producer.id !== id)
+      await axios.delete(`/api/cities/delete/${id}`);
+      setCities((prevCities) =>
+        prevCities.filter((city) => city.id !== id)
       );
     } catch (err) {
       console.log("err", err);
     }
   };
-
   useEffect(() => {
-    getProducers(page, rowsPerPage, searchQuery, searchStatus);
-    getCities(); // Fetch cities when component mounts
-    getCategories(); // Fetch categories when component mounts
+    getCities(page, rowsPerPage, searchQuery, searchStatus);
   }, [page, rowsPerPage, searchQuery, searchStatus]);
-
-  const getCityName = (cityId) => {
-    const city = cities.find((city) => city.id === cityId);
-    return city ? city.name : "Unknown";
-  };
 
   return (
     <>
       <div className="flex p-2 justify-between">
         <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
-          Producers
+          Cities
         </h4>
         <button
           className=" select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 lg:py-2 lg:px-4 px-2 text-center align-middle font-sans md:text-xs text-[10px] font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none inline-block"
           type="button"
         >
-          <Link className={"flex items-center"} to={"/dashboard/producers/add"}>
+          <Link
+            className={"flex items-center"}
+            to={"/dashboard/cities/add"}
+          >
+            {" "}
             Ajouter
           </Link>
         </button>
       </div>
 
+
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Producer</TableHead>
-            <TableHead>Contact Info</TableHead>
             <TableHead>City</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {producers?.length > 0 &&
-            producers.map((producer) => (
-              <TableRow key={producer.id}>
-                <TableCell className="flex items-center max-md:p-2">
-                  <div className="flex flex-col">
-                    <div>{producer.name}</div>
-                  </div>
-                </TableCell>
-                <TableCell className="max-md:p-2 text-center">
-                  {producer.contact_info}
-                </TableCell>
-                <TableCell className="max-md:p-2 text-center">
-                  {getCityName(producer.city_id)}
+          {cities?.length > 0 &&
+            cities.map((city) => (
+              <TableRow key={city.id}>
+                <TableCell className="max-md:p-2 text-left">
+                  {city.name}
                 </TableCell>
 
-                <TableCell className="max-md:p-2 flex items-center h-full">
+                <TableCell className="max-md:p-2 flex  h-full">
                   <Button className="bg-blue-400 mr-2 max-md:px-3">
-                    <Link to={`/dashboard/producers/edit/${producer.id}`}>
+                    <Link to={`/dashboard/cities/edit/${city.id}`}>
                       <RiEditFill />
                     </Link>
                   </Button>
+                  {/* <Button className="bg-purple-400 mr-2 max-md:px-3">
+                                        <Link
+                                            to={`/cities/details/${city.id}`}
+                                        >
+                                            <BiSolidShow/>
+                                        </Link>
+                                    </Button> */}
                   <Button
                     className="bg-red-500"
-                    onClick={() => handleDelete(producer.id)}
+                    onClick={() => handleDelete(city.id)}
                   >
                     Delete
                   </Button>
@@ -175,7 +153,7 @@ function Producers() {
       <div className="flex justify-between mt-4 px-4">
         <div className="w-full">
           <p className="text-sm w-full text-gray-500">
-            Showing {producers.length} of {totalProducers} producers
+            Showing {cities.length} of {totalCities} cities
           </p>
         </div>
         <Pagination className="flex justify-end">
@@ -216,4 +194,4 @@ function Producers() {
   );
 }
 
-export default Producers;
+export default Cities;
