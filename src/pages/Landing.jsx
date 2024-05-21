@@ -3,10 +3,11 @@ import "../styles/Landing.css";
 import { Hero, ProductElement, Stats } from "../components";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import axios from "../lib/axios";
+import { isNull } from "../lib/utils";
 
 export const landingLoader = async () => {
   const response = await axios.get(`/api/products?_page=1&_limit=8`);
-  const data = response?.data;
+  const data = response?.data ?? [];
 
   return { products: data };
 };
@@ -26,8 +27,8 @@ const Landing = () => {
           Trending Products
         </h2>
         <div className="selected-products-grid max-w-7xl mx-auto">
-          {products?.length == 0
-            ? null
+          {!isNull(products)
+            ? <>No products found!</>
             : products?.map((product) => (
                 <ProductElement
                   key={product?.id}
