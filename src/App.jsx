@@ -28,6 +28,7 @@ import Categories from "./pages/admin/categories/Categories";
 import CategoriesAdd from "./pages/admin/categories/CategoriesAdd";
 import CategoryEdit from "./pages/admin/categories/CategoryEdit";
 import Producers from "./pages/admin/producers/Producers";
+import Cities from "./pages/admin/cities/Cities";
 
 const router = createBrowserRouter([
   {
@@ -153,6 +154,11 @@ const router = createBrowserRouter([
       {
         path: "producers/edit/:id",
         element: <CategoryEdit />,
+        loader: singleProductLoader,
+      },
+      {
+        path: "cities",
+        element: <Cities />,
         loader: singleProductLoader,
       },
       // {
