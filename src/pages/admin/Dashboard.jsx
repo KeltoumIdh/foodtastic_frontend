@@ -14,7 +14,7 @@ const Dashboard = () => {
   // }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full px-2 lg:px-4">
 
       <div className="md:m-2 flex flex-col justify-between items-start gap-2 w-full md:w-[calc(100 - 5)] ">
         <div className="h-auto mb-2 w-full">
