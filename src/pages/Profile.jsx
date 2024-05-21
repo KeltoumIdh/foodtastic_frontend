@@ -94,7 +94,7 @@ const Profile = () => {
             />
           </div>
 
-          <div className="form-control w-full lg:max-w-xs">
+          {/* <div className="form-control w-full lg:max-w-xs">
             <label className="label">
               <span className="label-text">Your Lastname</span>
             </label>
@@ -107,7 +107,7 @@ const Profile = () => {
                 setUserFormData({ ...userFormData, lastname: e.target.value });
               }}
             />
-          </div>
+          </div> */}
 
           <div className="form-control w-full lg:max-w-xs">
             <label className="label">
@@ -124,7 +124,7 @@ const Profile = () => {
             />
           </div>
 
-          <div className="form-control w-full lg:max-w-xs">
+          {/* <div className="form-control w-full lg:max-w-xs">
             <label className="label">
               <span className="label-text">Your Phone</span>
             </label>
@@ -137,7 +137,7 @@ const Profile = () => {
                 setUserFormData({ ...userFormData, phone: e.target.value });
               }}
             />
-          </div>
+          </div> */}
 
           <div className="form-control w-full lg:max-w-xs">
             <label className="label">
@@ -154,7 +154,7 @@ const Profile = () => {
             />
           </div>
 
-          <div className="form-control w-full lg:max-w-xs">
+          {/* <div className="form-control w-full lg:max-w-xs">
             <label className="label">
               <span className="label-text">Your Password</span>
             </label>
@@ -167,7 +167,7 @@ const Profile = () => {
                 setUserFormData({ ...userFormData, password: e.target.value });
               }}
             />
-          </div>
+          </div> */}
         </div>
         <button
           className="btn btn-lg bg-blue-600 hover:bg-blue-500 text-white mt-10"
