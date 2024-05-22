@@ -84,7 +84,7 @@ const Header = () => {
             className="btn btn-ghost normal-case text-2xl font-black text-accent-content"
           >
             {/* <AiFillShopping /> */}
-            <img src="../../public/2-removebg-preview.png" alt="" className="w-12"/>
+            <img src="../2-removebg-preview.png" alt="" className="w-12"/>
             Foodtastic
           </Link>
         </div>
