@@ -264,32 +264,32 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="container text-lg navlinks-container">
-          <NavLink className="text-accent-content" to="/">
+        <div className="container text-lg text-green-700 navlinks-container">
+          <NavLink className="font-semibold  text-green-700" to="/">
             Home
           </NavLink>
-          <NavLink className="text-accent-content" to="/shop">
+          <NavLink className="font-semibold  text-green-700" to="/shop">
             Shop
           </NavLink>
-          <NavLink className="text-accent-content" to="/about-us">
+          <NavLink className="font-semibold  text-green-700" to="/about-us">
             About us
           </NavLink>
-          <NavLink className="text-accent-content" to="/contact">
+          <NavLink className="font-semibold  text-green-700" to="/contact">
             Contact
           </NavLink>
           {!isLoggedIn && (
             <>
-              <NavLink className="text-accent-content" to="/login">
+              <NavLink className="font-semibold  text-green-700" to="/login">
                 Login
               </NavLink>
-              <NavLink className="text-accent-content" to="/register">
+              <NavLink className="font-semibold  text-green-700" to="/register">
                 Register
               </NavLink>
             </>
           )}
           {isLoggedIn && user.role == "admin" && (
             <>
-                <NavLink className="text-accent-content" to="/dashboard/admin">
+                <NavLink className="font-semibold  text-green-700" to="/dashboard/admin">
                   Dashboard
                 </NavLink>
             </>
