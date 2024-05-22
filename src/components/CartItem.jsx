@@ -2,11 +2,10 @@ import { useDispatch } from "react-redux";
 import { removeItem, updateCartAmount } from "../features/cart/cartSlice";
 
 
-const CartItem = ({ cartItem }) => {
-  const { id, title, price, image, amount, brandName, selectedSize } =
-    cartItem;
+const CartItem = ({ cartItem = {} }) => {
+  const { id, name, price, image, quantity } = cartItem;
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   return (
     <article
@@ -15,47 +14,31 @@ const CartItem = ({ cartItem }) => {
     >
       {/* IMAGE */}
       <img
-        src={`https://${image}`}
-        alt={title}
-        className="h-24 w-24 rounded-lg sm:h-32 sm:w-32 object-cover"
+        src={image ?? ''}
+        alt={name}
+        className="h-24 w-24 rounded-lg sm:h-32 sm:w-32 object-cover bg-gray-100"
       />
       {/* INFO */}
       <div className="sm:ml-16 sm:w-48">
         {/* TITLE */}
-        <h3 className="capitalize font-medium text-accent-content">{title}</h3>
+        <h3 className="capitalize font-medium text-accent-content">{name}</h3>
         {/* COMPANY */}
         <h4 className="mt-2 capitalize text-sm text-accent-content">
-          Brand: { brandName }
+          price: {price}
         </h4>
         <h4 className="mt-2 capitalize text-sm text-accent-content">
-          Size: { selectedSize }
+          quantity: {quantity}
         </h4>
-      </div>
-      <div className="sm:ml-12">
-        {/* AMOUNT */}
-        <div className="form-control max-w-xs">
-          <label htmlFor="amount" className="label p-0">
-            <span className="label-text text-accent-content">Amount</span>
-          </label>
-          <input
-            name="number"
-            id="amount"
-            className="mt-2 input input-bordered input-sm w-full max-w-xs text-accent-content"
-            value={amount}
-           onChange={(event) => dispatch(updateCartAmount({id: id, amount: event.target.value}))}
-            />
-        </div>
-        {/* REMOVE */}
         <button
-          className="mt-2 link link-warning link-hover text-sm text-accent-content"
-          onClick={()=> dispatch(removeItem(id))}
+          className="mt-2 link link-warning link-hover text-sm text-red-400 hover:underline"
+          onClick={() => dispatch(removeItem(id))}
         >
           remove
         </button>
       </div>
 
       {/* PRICE */}
-      <p className="font-medium sm:ml-auto text-accent-content">${ (price * amount).toFixed(2) }</p>
+      <p className="font-medium sm:ml-auto text-accent-content">${price * quantity}</p>
     </article>
   );
 };

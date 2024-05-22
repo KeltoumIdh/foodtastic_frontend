@@ -160,7 +160,13 @@ const SingleProduct = () => {
               className="btn bg-blue-600 hover:bg-blue-500 text-white"
               onClick={() => {
                 if (loginState) {
-                  dispatch(addToCart(product));
+                  dispatch(addToCart({
+                    id: productData?.id,
+                    name: productData?.name,
+                    price: productData?.price,
+                    image: productData?.image,
+                    quantity: quantity
+                  }));
                 } else {
                   toast.error(
                     "You must be logged in to add products to the cart"

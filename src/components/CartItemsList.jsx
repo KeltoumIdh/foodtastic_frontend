@@ -6,6 +6,8 @@ const CartItemsList = () => {
     
     const { cartItems } = useSelector(state => state.cart);
 
+    console.log('cartItems',cartItems)
+
   return (
     <>
       {cartItems.map((item) => {
