@@ -12,7 +12,7 @@ const SingleProductReviews = ({ rating, productData }) => {
         <h2 className="text-4xl text-accent-content text-center mb-5 max-sm:text-2xl">
           Reviews
         </h2>
-        {productData.reviews.map((item) => (
+        {productData?.reviews?.map((item) => (
           <SingleReview key={nanoid()} reviewObj={item} />
         ))}
         {productData?.totalReviewCount > 3 && (

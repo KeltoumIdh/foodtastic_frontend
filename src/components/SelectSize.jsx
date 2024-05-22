@@ -11,7 +11,7 @@ const SelectSize = ({ sizeList, size, setSize }) => {
         <option disabled className="text-lg">
           Pick your size
         </option>
-        {sizeList.map((item, index) => (
+        {sizeList?.map((item, index) => (
           <option value={item} key={index} className="text-xl">
             {item}
           </option>
