@@ -20,7 +20,7 @@ import axios from "../../../lib/axios.jsx";
 
 function ProductsAdd() {
   const { toast } = useToast();
-  const [imageName, setImageName] = useState("");
+  const [image, setImage] = useState(null);
   const [producers, setProducers] = useState([]);
   const [categories, setCategories] = useState([]);
   console.log(producers);
@@ -56,28 +56,22 @@ function ProductsAdd() {
   }, []);
 
   const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files.length > 0) {
-      const firstFile = files[0];
-      setImageName(firstFile.name);
-    }
+    const file = event.target.files[0];
+    if (file) setImage(file);
   };
   const onSubmit = async (values) => {
-    console.log("values", values);
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("categorie", parseInt(values.categorie, 10));
     formData.append("producer", parseInt(values.producer, 10));
     formData.append("quantity", parseInt(values.quantity, 10));
     formData.append("price", parseFloat(values.price)); // Convert to float
-    if (values.image && values.image.length > 0) {
-      formData.append("image", values.image[0].name);
-      console.log("img", values.image[0].name);
-    }
+    formData.append("image", values.image[0]);
 
     for (let pair of formData.entries()) {
       console.log(pair[0] + ": " + pair[1]);
     }
+
     try {
       const { status, data } = await axios.post("/api/products/add", formData);
       console.log("data", data, "status", status);
