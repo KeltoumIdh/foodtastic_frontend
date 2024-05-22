@@ -7,7 +7,7 @@ import {
   SectionTitle,
 } from "../components";
 import "../styles/Shop.css";
-import axios from "axios";
+import axios from "../lib/axios";
 import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
 
@@ -57,7 +57,7 @@ export const shopLoader = async ({ request }) => {
     (filterObj.date ? `&productionDate=${filterObj.date}` : ``); // It only matched exact for the date and time.
 
   try {
-    const response = await axios(`/api/products${parameter}`);
+    const response = await axios.get(`/api/products${parameter}`);
     let data = response?.data ?? [];
 
     // sorting in descending order
@@ -92,11 +92,11 @@ const Shop = () => {
             No products found for this filter
           </h2>
         )}
-        <div className="grid grid-cols-4 px-2 gap-y-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 shop-products-grid">
-          {productLoaderData?.productsData?.length !== 0 &&
-            productLoaderData?.productsData?.map((product) => (
+        <div className="py-8 grid grid-cols-4 px-2 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 shop-products-grid">
+          {productLoaderData?.productsData?.data?.length !== 0 &&
+            productLoaderData?.productsData?.data?.map((product) => (
               <ProductElement
-                key={nanoid()}
+                key={`product_${product?.id}`}
                 id={product?.id}
                 title={product?.name}
                 image={product?.imageUrl}

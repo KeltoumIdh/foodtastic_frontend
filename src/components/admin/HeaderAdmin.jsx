@@ -51,9 +51,13 @@ const HeaderAdmin = () => {
 
   useEffect(() => {
     setIsLoggedIn(loginState);
-
     fetchWishlist();
-  }, [loginState]);
+
+    // Set initial theme
+    const theme = darkMode ? "dark" : "light";
+    document.querySelector('html').setAttribute('data-theme', theme);
+  }, [loginState, darkMode]);
+
 
   return (
     <>

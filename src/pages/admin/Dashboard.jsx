@@ -15,7 +15,6 @@ const Dashboard = () => {
 
   return (
     <div className="w-full px-2 lg:px-4">
-
       <div className="md:m-2 flex flex-col justify-between items-start gap-2 w-full md:w-[calc(100 - 5)] ">
         <div className="h-auto mb-2 w-full">
           <FourCard />
@@ -24,16 +23,14 @@ const Dashboard = () => {
           <div className="flex flex-col h-auto ">
             <StockCard />
           </div>
-
-          <div className="flex flex-col h-auto ">
-            <ListCard />
-          </div>
-        </div>
-        <div className="h-auto w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
           <div className="flex flex-col h-auto ">
             <ChartCard />
           </div>
-
+          {/* <div className="flex flex-col h-auto ">
+            <ListCard />
+          </div> */}
+        </div>
+        <div className="h-auto w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
           <div className="flex flex-col h-auto ">{/* <ListCard /> */}</div>
         </div>
       </div>
