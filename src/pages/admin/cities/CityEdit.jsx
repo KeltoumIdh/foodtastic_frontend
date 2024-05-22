@@ -13,17 +13,10 @@ export default function CityEdit() {
     const navigate = useNavigate();
 
     const [city, setCity] = useState({
+        id: "",
         name: "",
-        categorie: "",
-        producer: "",
-        price: "",
-        quantity_available: "",
-        image: "",
     });
 
-    const [categories, setCategories] = useState([]);
-    const [producers, setProducers] = useState([]);
-    const [newImage, setNewImage] = useState({});
     const [isProgress, setInProgress] = useState(false);
 
     const { register, handleSubmit } = useForm();
@@ -31,8 +24,8 @@ export default function CityEdit() {
     useEffect(() => {
         const fetchCity = async () => {
             try {
-                const response = await axios.post(`/api/cities/${id}`);
-                console.log('citiescitiescitiescities',response)
+                const response = await axios.get(`/api/cities/${id}`);
+                
                 if (response.status === 200) {
                     setCity(response.data);
                 } else {
@@ -60,22 +53,17 @@ export default function CityEdit() {
             setInProgress(true);
 
             const formData = new FormData();
-            Object.entries(data).forEach(([key, value]) => {
-                formData.append(key, value);
-            });
-            formData.append("image", newImage);
+            formData.append("id", city.id);
+            formData.append("name", city.name);
 
-            const response = await axios.post(
-                `/api/Categories/update/${id}`,
-                formData
-            );
+            const response = await axios.put(`/api/cities/update/${id}`, formData);
 
             if (response.status === 200) {
                 toast({
                     title: "Success",
                     description: "City updated successfully!",
                 });
-                navigate("/Categories");
+                navigate(-1)
             }
         } catch (error) {
             console.error("Error updating city:", error);
