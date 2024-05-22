@@ -36,7 +36,7 @@ const Landing = () => {
                   title={product?.name}
                   image={product?.imageUrl}
                   rating={product?.rating}
-                  price={product?.price?.current?.value}
+                  price={product?.price}
                 />
               ))}
         </div>
