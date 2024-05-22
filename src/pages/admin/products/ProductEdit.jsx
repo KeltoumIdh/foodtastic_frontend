@@ -8,6 +8,7 @@ import axios from "../../../lib/axios.jsx";
 import { isNull } from "../../../lib/utils.js";
 
 export default function ProductEdit() {
+
     const { id } = useParams();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -106,7 +107,7 @@ export default function ProductEdit() {
   return (
     <>
       <div className="flex items-center p-2">
-        <Link to={"/products"} className="mr-2">
+        <a onClick={() => navigate(-1)} className="mr-2 cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -121,7 +122,7 @@ export default function ProductEdit() {
               d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
             />
           </svg>
-        </Link>
+        </a>
         <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
           Modifier produit
         </h4>
