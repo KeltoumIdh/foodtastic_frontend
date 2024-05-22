@@ -2,16 +2,17 @@ import React, { memo, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
 
-const QuantityInput = ({ quantity, setQuantity }) => {
+const QuantityInput = ({ quantity, setQuantity, max = 10 }) => {
   return (
     <>
       <button
         type="button"
         className="h-10 w-10 border-gray-600 flex justify-center items-center border leading-10 text-gray-600 transition hover:opacity-75"
         onClick={() => {
-          if(quantity !== 1){
-          setQuantity(quantity - 1)}
+          if (quantity > 1) {
+            setQuantity(quantity - 1)
           }
+        }
         }
       >
         <FaMinus className="text-2xl" />
@@ -28,7 +29,11 @@ const QuantityInput = ({ quantity, setQuantity }) => {
       <button
         type="button"
         className="h-10 w-10 border-gray-600 flex justify-center items-center border leading-10 text-gray-600 transition hover:opacity-75"
-        onClick={() => setQuantity(quantity + 1)}
+        onClick={() => {
+          if (quantity < max) {
+            setQuantity(quantity + 1)
+          }
+        }}
       >
         <FaPlus className="text-2xl" />
       </button>
