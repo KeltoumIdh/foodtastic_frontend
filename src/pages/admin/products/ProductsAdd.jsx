@@ -1,31 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../../components/ui/form.jsx";
-import { Input } from "../../../components/ui/input.jsx";
 import { Button } from "../../../components/ui/button.jsx";
 import { Loader } from "lucide-react";
 import { useToast } from "../../../components/ui/use-toast.js";
-import { Label } from "../../../components/ui/label.jsx";
-// import SuccessPopup from '../../components/Popups/SuccessPopup.jsx'; // Import your success popup component
 import axios from "../../../lib/axios.jsx";
 import ReturnBackBtn from "../../../components/Shared/ReturnBackBtn.jsx";
 
 function ProductsAdd() {
   const { toast } = useToast();
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   const [producers, setProducers] = useState([]);
   const [categories, setCategories] = useState([]);
-  console.log(producers);
-  console.log(categories);
 
   const methods = useForm();
   const navigate = useNavigate();
@@ -37,7 +23,6 @@ function ProductsAdd() {
     setError,
     reset,
   } = methods;
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   useEffect(() => {
     // Fetch producers and categories
@@ -57,8 +42,11 @@ function ProductsAdd() {
   }, []);
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) setImage(file);
+    const imgs = event.target.files;
+    console.log('imgs',imgs)
+    if (imgs) {
+      setImages(imgs);
+    }
   };
   const onSubmit = async (values) => {
     const formData = new FormData();
@@ -67,7 +55,9 @@ function ProductsAdd() {
     formData.append("producer", parseInt(values.producer, 10));
     formData.append("quantity", parseInt(values.quantity, 10));
     formData.append("price", parseFloat(values.price)); // Convert to float
-    formData.append("image", values.image[0]);
+    for (const imagez of images) {
+      formData.append('images[]', imagez);
+    }
 
     for (let pair of formData.entries()) {
       console.log(pair[0] + ": " + pair[1]);
@@ -75,7 +65,6 @@ function ProductsAdd() {
 
     try {
       const { status, data } = await axios.post("/api/products/add", formData);
-      console.log("data", data, "status", status);
 
       if (status === 201) {
         toast({
@@ -83,7 +72,7 @@ function ProductsAdd() {
           description: "Product created successfully!",
         });
         reset();
-        navigate("/dashboard/products");
+        // navigate("/dashboard/products");
       }
     } catch (error) {
       console.error("Request failed:", error);
@@ -98,10 +87,6 @@ function ProductsAdd() {
         });
       }
     }
-  };
-
-  const closeSuccessPopup = () => {
-    setShowSuccessPopup(false);
   };
 
   return (
