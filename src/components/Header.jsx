@@ -51,13 +51,17 @@ const Header = () => {
 
   useEffect(() => {
     setIsLoggedIn(loginState);
-
     fetchWishlist();
-  }, [loginState]);
+
+    // Set initial theme
+    const theme = darkMode ? "dark" : "light";
+    document.querySelector('html').setAttribute('data-theme', theme);
+  }, [loginState, darkMode]);
+
 
   return (
     <>
-      <div className="topbar border-b border-gray-800">
+      {/* <div className="topbar border-b border-gray-800">
         <ul>
           <li>
             <FaHeadphones className="text-2xl max-sm:text-lg text-accent-content" />
@@ -72,7 +76,7 @@ const Header = () => {
             </span>
           </li>
         </ul>
-      </div>
+      </div> */}
       <div className="navbar bg-base-100 max-w-7xl mx-auto">
         <div className="flex-1">
           <Link
@@ -80,7 +84,7 @@ const Header = () => {
             className="btn btn-ghost normal-case text-2xl font-black text-accent-content"
           >
             <AiFillShopping />
-            Kuzma Clothing & Shoes
+            Foodtastic
           </Link>
         </div>
         <div className="flex-none">
@@ -209,7 +213,7 @@ const Header = () => {
 
             <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content mt-4">
               <label htmlFor="my-drawer" className="btn drawer-button">
-                <FaWindowClose className="text-3xl ml-auto" />
+                <FaWindowClose className="text-lg ml-auto" />
               </label>
               {/* Sidebar content here */}
               <li className="text-xl">
@@ -249,7 +253,7 @@ const Header = () => {
               {isLoggedIn && user.role == "admin" && (
                 <>
                   <li className="text-xl">
-                    <NavLink className="text-accent-content" to="/about">
+                    <NavLink className="text-accent-content" to="/dashboard/admin">
                       Dashboard
                     </NavLink>
                   </li>
@@ -259,7 +263,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="container text-2xl navlinks-container">
+        <div className="container text-lg navlinks-container">
           <NavLink className="text-accent-content" to="/">
             Home
           </NavLink>
@@ -284,7 +288,7 @@ const Header = () => {
           )}
           {isLoggedIn && user.role == "admin" && (
             <>
-                <NavLink className="text-accent-content" to="/dashboard">
+                <NavLink className="text-accent-content" to="/dashboard/admin">
                   Dashboard
                 </NavLink>
             </>

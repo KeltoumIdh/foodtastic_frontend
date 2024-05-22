@@ -18,13 +18,13 @@ import { Label } from "../../../components/ui/label.jsx";
 // import SuccessPopup from '../../components/Popups/SuccessPopup.jsx'; // Import your success popup component
 import axios from "../../../lib/axios.jsx";
 
-function CategoriesAdd() {
+function CitiesAdd() {
   const { toast } = useToast();
   const [imageName, setImageName] = useState("");
   const [producers, setProducers] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [cities, setCities] = useState([]);
   console.log(producers);
-  console.log(categories);
+  console.log(cities);
 
   const methods = useForm();
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ function CategoriesAdd() {
       console.log(pair[0] + ": " + pair[1]);
     }
     try {
-      const { status, data } = await axios.post("/api/categories/add", formData);
+      const { status, data } = await axios.post("/api/cities/add", formData);
       console.log("data", data, "status", status);
 
       if (status === 201) {
@@ -60,7 +60,7 @@ function CategoriesAdd() {
           description: "Product created successfully!",
         });
         reset();
-        navigate("/dashboard/categories");
+        navigate("/dashboard/cities");
       }
     } catch (error) {
       console.error("Request failed:", error);
@@ -84,7 +84,7 @@ function CategoriesAdd() {
   return (
     <>
       <div className="flex items-center p-2">
-        <Link to={"/dashboard/categories"} className="mr-2">
+        <Link to={"/dashboard/cities"} className="mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -101,7 +101,7 @@ function CategoriesAdd() {
           </svg>
         </Link>
         <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
-          Ajouter produit
+          Ajouter city
         </h4>
       </div>
 
@@ -130,4 +130,4 @@ function CategoriesAdd() {
     </>
   );
 }
-export default CategoriesAdd;
+export default CitiesAdd;

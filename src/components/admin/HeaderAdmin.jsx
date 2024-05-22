@@ -151,6 +151,11 @@ const HeaderAdmin = () => {
                   Cities
                 </NavLink>
               </li>
+              <li className="text-sm">
+                <NavLink className="text-accent-content" to="admins">
+                  Admins
+                </NavLink>
+              </li>
             </ul>
           </div>
         </div>
@@ -170,6 +175,9 @@ const HeaderAdmin = () => {
           </NavLink>
           <NavLink className="text-accent-content" to="cities">
             Cities
+          </NavLink>
+          <NavLink className="text-accent-content" to="admins">
+            Admins
           </NavLink>
         </div>
       </div>

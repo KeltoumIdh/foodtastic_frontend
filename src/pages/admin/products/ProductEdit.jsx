@@ -5,6 +5,7 @@ import { Button } from "../../../components/ui/button.jsx";
 import { Loader } from "lucide-react";
 import { useToast } from "../../../components/ui/use-toast.js";
 import axios from "../../../lib/axios.jsx";
+import { isNull } from "../../../lib/utils.js";
 
 export default function ProductEdit() {
     const { id } = useParams();
@@ -28,7 +29,9 @@ export default function ProductEdit() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.post(`/api/products/edit/${id}`);
+        // const response = await axios.post(`/api/products/edit/${id}`);
+        const response = !isNull(id) ? await axios.post(`/api/products/edit/${id}`) : {};
+
         if (response.status === 200) {
           setProduct(response.data);
         } else {
@@ -78,8 +81,8 @@ export default function ProductEdit() {
         formData.append(key, value);
       });
       formData.append("image", newImage);
-
-      const response = await axios.post(`/api/products/update/${id}`, formData);
+      const response = !isNull(id) ? await axios.post(`/api/products/update/${id}`, formData) : {};
+    //   const response = await axios.post(`/api/products/update/${id}`, formData);
 
       if (response.status === 200) {
         toast({

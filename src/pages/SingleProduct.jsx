@@ -26,7 +26,7 @@ import { isNull } from "../lib/utils";
 export const singleProductLoader = async ({ params }) => {
   const { id } = params;
 
-  const response = !isNull(id) ? await axios.get(`/products/${id}`) : {};
+  const response = !isNull(id) ? await axios.get(`/api/products/${id}`) : {};
 
   return { productData: response.data ?? [] };
 };

@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../../components/ui/form.jsx";
-import { Input } from "../../../components/ui/input.jsx";
+
 import { Button } from "../../../components/ui/button.jsx";
 import { Loader } from "lucide-react";
 import { useToast } from "../../../components/ui/use-toast.js";
-import { Label } from "../../../components/ui/label.jsx";
-// import SuccessPopup from '../../components/Popups/SuccessPopup.jsx'; // Import your success popup component
 import axios from "../../../lib/axios.jsx";
 
 function ProducersAdd() {
@@ -23,8 +12,7 @@ function ProducersAdd() {
   const [imageName, setImageName] = useState("");
   const [producers, setProducers] = useState([]);
   const [categories, setCategories] = useState([]);
-  console.log(producers);
-  console.log(categories);
+  const [cities, setCities] = useState([]); // Add state for cities
 
   const methods = useForm();
   const navigate = useNavigate();
@@ -36,18 +24,20 @@ function ProducersAdd() {
     setError,
     reset,
   } = methods;
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   useEffect(() => {
-    // Fetch producers and categories
+    // Fetch producers, categories, and cities
     const fetchOptions = async () => {
       try {
-        const [producerResponse, categoryResponse] = await Promise.all([
-          axios.get("/api/producers"), // Adjust the endpoint accordingly
-          axios.get("/api/categories"), // Adjust the endpoint accordingly
-        ]);
+        const [producerResponse, categoryResponse, cityResponse] =
+          await Promise.all([
+            axios.get("/api/producers"), // Adjust the endpoint accordingly
+            axios.get("/api/categories"), // Adjust the endpoint accordingly
+            axios.get("/api/cities"), // Adjust the endpoint accordingly
+          ]);
         setProducers(producerResponse?.data ?? []);
         setCategories(categoryResponse?.data ?? []);
+        setCities(cityResponse?.data ?? []); // Set cities data
       } catch (error) {
         console.error("Failed to fetch options", error);
       }
@@ -55,28 +45,15 @@ function ProducersAdd() {
     fetchOptions();
   }, []);
 
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files.length > 0) {
-      const firstFile = files[0];
-      setImageName(firstFile.name);
-    }
-  };
   const onSubmit = async (values) => {
-    console.log("values", values);
+    console.log("Form Values:", values); // Add this line
     const formData = new FormData();
     formData.append("name", values.name);
-    formData.append("categorie", parseInt(values.categorie, 10));
-    formData.append("producer", parseInt(values.producer, 10));
-    formData.append("quantity", parseInt(values.quantity, 10));
-    formData.append("price", parseFloat(values.price)); // Convert to float
-    if (values.image && values.image.length > 0) {
-      formData.append("image", values.image[0].name);
-      console.log("img", values.image[0].name);
-    }
+    formData.append("contact_info", values.contact_info);
+    formData.append("city_id", values.city_id);
 
     for (let pair of formData.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
+      console.log(pair[0] + ": " + pair[1]); // Add this line
     }
     try {
       const { status, data } = await axios.post("/api/producers/add", formData);
@@ -105,9 +82,6 @@ function ProducersAdd() {
     }
   };
 
-  const closeSuccessPopup = () => {
-    setShowSuccessPopup(false);
-  };
 
   return (
     <>
@@ -129,7 +103,7 @@ function ProducersAdd() {
           </svg>
         </Link>
         <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
-          Ajouter produit
+          Ajouter producer
         </h4>
       </div>
 
@@ -148,88 +122,40 @@ function ProducersAdd() {
               {errors.name && errors.name.message}
             </span>
           </div>
-
           <div className="mb-3">
-            <label htmlFor="price" className="block mb-1 max-md:text-sm">
-              Price
+            <label htmlFor="contact_info" className="block mb-1 max-md:text-sm">
+              Contact Info
             </label>
             <input
-              type="number"
-              placeholder="Price"
-              {...register("price", { required: "Price is required" })}
+              placeholder="Contact Info"
+              {...register("contact_info", {
+                required: "Contact info is required",
+              })}
               className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
             />
             <span className="text-red-500">
-              {errors.price && errors.price.message}
+              {errors.contact_info && errors.contact_info.message}
             </span>
           </div>
 
           <div className="mb-3">
-            <label htmlFor="quantity" className="block mb-1 max-md:text-sm">
-              Quantity KG
-            </label>
-            <input
-              placeholder="Quantity"
-              {...register("quantity", { required: "Quantity is required" })}
-              className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
-            />
-            <span className="text-red-500">
-              {errors.quantity && errors.quantity.message}
-            </span>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="categorie" className="block mb-1 max-md:text-sm">
-              Categorie
+            <label htmlFor="city_id" className="block mb-1 max-md:text-sm">
+              City
             </label>
             <select
-              {...register("categorie", { required: "Categorie is required" })}
+              {...register("city_id", { required: "City is required" })}
               className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
             >
-              <option value="">Select a category</option>
-              {categories?.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
+              <option value="">Select a city</option>
+              {cities?.map((city) => (
+                <option key={city.id} value={city.id}>
+                  {city.name}
                 </option>
               ))}
             </select>
             <span className="text-red-500">
-              {errors.categorie && errors.categorie.message}
+              {errors.city_id && errors.city_id.message}
             </span>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="producer" className="block mb-1 max-md:text-sm">
-              Producer
-            </label>
-            <select
-              {...register("producer", { required: "Producer is required" })}
-              className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
-            >
-              <option value="">Select a producer</option>
-              {producers?.map((producer) => (
-                <option key={producer.id} value={producer.id}>
-                  {producer.name}
-                </option>
-              ))}
-            </select>
-            <span className="text-red-500">
-              {errors.producer && errors.producer.message}
-            </span>
-          </div>
-
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <label htmlFor="image" className="block mb-1 max-md:text-sm">
-              Image
-            </label>
-            <input
-              {...register("image")}
-              name="image"
-              type="file"
-              accept=".jpg,.jpeg,.png"
-              onChange={handleFileChange}
-              className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
-            />
           </div>
 
           <Button className="mt-3 max-md:text-sm max-md:p-2" type="submit">
@@ -237,8 +163,8 @@ function ProducersAdd() {
           </Button>
         </form>
       </FormProvider>
-      {/* {showSuccessPopup && <SuccessPopup message="Producer created successfully!" onClose={closeSuccessPopup} />} */}
     </>
   );
 }
+
 export default ProducersAdd;

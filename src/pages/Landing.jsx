@@ -6,9 +6,9 @@ import axios from "../lib/axios";
 import { isNull } from "../lib/utils";
 
 export const landingLoader = async () => {
-  const response = await axios.get(`/api/products?_page=1&_limit=8`);
-  const data = response?.data ?? [];
-
+  const response = await axios.get(`/api/products`);
+  const data = response?.data?.data ?? [];
+console.log('data',data);
   return { products: data };
 };
 
@@ -20,14 +20,14 @@ const Landing = () => {
   return (
     <main>
       <Hero />
-      <Stats />
+      {/* <Stats /> */}
 
       <div className="selected-products">
-        <h2 className="text-6xl text-center my-12 max-md:text-4xl text-accent-content">
+        <h2 className="text-6xl text-green-700  font-bold text-center my-12 max-md:text-4xl text-accent-content">
           Trending Products
         </h2>
         <div className="selected-products-grid max-w-7xl mx-auto">
-          {!isNull(products)
+          {isNull(products)
             ? <>No products found!</>
             : products?.map((product) => (
                 <ProductElement

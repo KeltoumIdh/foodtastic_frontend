@@ -29,6 +29,13 @@ import CategoriesAdd from "./pages/admin/categories/CategoriesAdd";
 import CategoryEdit from "./pages/admin/categories/CategoryEdit";
 import Producers from "./pages/admin/producers/Producers";
 import Cities from "./pages/admin/cities/Cities";
+import CitiesAdd from "./pages/admin/cities/CitiesAdd";
+import CityEdit from "./pages/admin/cities/CityEdit";
+import ProducersAdd from "./pages/admin/producers/ProducersAdd";
+import ProducerEdit from "./pages/admin/producers/ProducerEdit";
+import { Admins } from "./pages/admin/users/Admins";
+import AdminAdd from "./pages/admin/users/AdminAdd";
+import AdminEdit from "./pages/admin/users/AdminEdit";
 
 const router = createBrowserRouter([
   {
@@ -148,12 +155,12 @@ const router = createBrowserRouter([
       },
       {
         path: "producers/add",
-        element: <producersAdd />,
+        element: <ProducersAdd />,
         loader: singleProductLoader,
       },
       {
         path: "producers/edit/:id",
-        element: <CategoryEdit />,
+        element: <ProducerEdit />,
         loader: singleProductLoader,
       },
       {
@@ -161,50 +168,32 @@ const router = createBrowserRouter([
         element: <Cities />,
         loader: singleProductLoader,
       },
-      // {
-      //   path: "about",
-      //   element: <About />,
-      // },
-      // {
-      //   path: "login",
-      //   element: <Login />,
-      // },
-      // {
-      //   path: "register",
-      //   element: <Register />,
-      // },
-      // {
-      //   path: "contact",
-      //   element: <Contact />,
-      // },
-      // {
-      //   path: "about-us",
-      //   element: <About />,
-      // },
-      // {
-      //   path: "cart",
-      //   element: <Cart />,
-      // },
-      // {
-      //   path: "wishlist",
-      //   element: <Wishlist />,
-      // },
-      // {
-      //   path: "user-profile",
-      //   element: <Profile />,
-      // },
-      // {
-      //   path: "search",
-      //   element: <Search />,
-      // },
-      // {
-      //   path: "thank-you",
-      //   element: <ThankYou />,
-      // },
-      // {
-      //   path: "order-history",
-      //   element: <OrderHistory />,
-      // },
+      {
+        path: "cities/add",
+        element: <CitiesAdd />,
+        loader: singleProductLoader,
+      },
+      {
+        path: "cities/edit/:id",
+        element: <CityEdit />,
+        loader: singleProductLoader,
+      },
+      {
+        path: "admins",
+        element: <Admins />,
+        loader: singleProductLoader,
+      },
+      {
+        path: "admins/add",
+        element: <AdminAdd />,
+        loader: singleProductLoader,
+      },
+      {
+        path: "admins/edit/:id",
+        element: <AdminEdit />,
+        loader: singleProductLoader,
+      },
+
     ],
   },
 ]);

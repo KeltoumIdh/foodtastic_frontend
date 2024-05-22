@@ -6,11 +6,11 @@ import { Loader } from "lucide-react";
 import { useToast } from "../../../components/ui/use-toast.js";
 import axios from "../../../lib/axios.jsx";
 
-export default function CategoryEdit() {
-    const { id } = useParams();
+export default function CityEdit() {
+  const { id } = useParams();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [category, setCategory] = useState({
+  const [city, setCity] = useState({
     name: "",
     categorie: "",
     producer: "",
@@ -26,22 +26,20 @@ export default function CategoryEdit() {
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    const fetchCategory = async () => {
+    const fetchCity = async () => {
       try {
         const response = await axios.post(`/api/Categories/edit/${id}`);
         if (response.status === 200) {
-          setCategory(response.data);
+          setCity(response.data);
         } else {
-          throw new Error("Failed to fetch category data");
+          throw new Error("Failed to fetch city data");
         }
       } catch (error) {
-        console.error("Error fetching category data:", error);
+        console.error("Error fetching city data:", error);
       }
     };
 
-
-
-    fetchCategory();
+    fetchCity();
   }, [id]);
 
   const handleFileChange = (event) => {
@@ -51,8 +49,8 @@ export default function CategoryEdit() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCategory((prevCategory) => ({
-      ...prevCategory,
+    setCity((prevCity) => ({
+      ...prevCity,
       [name]: value,
     }));
   };
@@ -67,20 +65,23 @@ export default function CategoryEdit() {
       });
       formData.append("image", newImage);
 
-      const response = await axios.post(`/api/Categories/update/${id}`, formData);
+      const response = await axios.post(
+        `/api/Categories/update/${id}`,
+        formData
+      );
 
       if (response.status === 200) {
         toast({
           title: "Success",
-          description: "Category updated successfully!",
+          description: "City updated successfully!",
         });
         navigate("/Categories");
       }
     } catch (error) {
-      console.error("Error updating category:", error);
+      console.error("Error updating city:", error);
       toast({
         title: "Error",
-        description: "Failed to update category. Please try again.",
+        description: "Failed to update city. Please try again.",
         status: "error",
       });
     } finally {
@@ -118,14 +119,12 @@ export default function CategoryEdit() {
           </label>
           <input
             placeholder="Nom"
-            value={category.name}
+            value={city.name}
             onChange={handleChange}
             name="name"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
           />
         </div>
-
-
 
         <Button className="mt-3 max-md:text-sm max-md:p-2" type="submit">
           {isProgress && <Loader className={"mx-2 my-2 animate-spin"} />}
