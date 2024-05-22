@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { FaHeadphones } from "react-icons/fa6";
-import { FaRegEnvelope } from "react-icons/fa6";
 import { HiMiniBars3BottomLeft } from "react-icons/hi2";
 import { FaHeart } from "react-icons/fa6";
-import { AiFillShopping } from "react-icons/ai";
 import { FaSun } from "react-icons/fa6";
 import { FaMoon } from "react-icons/fa6";
 import { FaWindowClose } from "react-icons/fa";
-
 import "../styles/Header.css";
 import { useDispatch, useSelector } from "react-redux";
 import { changeMode } from "../features/auth/authSlice";
@@ -20,16 +16,14 @@ import {
 } from "../features/wishlist/wishlistSlice";
 
 const Header = () => {
-  const { amount } = useSelector((state) => state.cart);
-  const { total } = useSelector((state) => state.cart);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [id, setId] = useState(localStorage.getItem("id"));
   const dispatch = useDispatch();
   const { darkMode } = useSelector((state) => state.auth);
   const [user, setUser] = useState("");
   const loginState = useSelector((state) => state.auth.isLoggedIn);
-  console.log("id", localStorage.getItem("id"));
-  console.log("authToken", localStorage.getItem("authToken"));
+
 
   const fetchWishlist = async () => {
     if (loginState) {
@@ -145,10 +139,7 @@ const Header = () => {
             >
               <div className="card-body">
                 <span className="font-bold text-lg text-accent-content">
-                  {amount} Items
-                </span>
-                <span className="text-info text-accent-content">
-                  Subtotal: ${total.toFixed(2)}
+                  {cartItems?.length ?? 0} Items
                 </span>
                 <div className="card-actions">
                   <Link
