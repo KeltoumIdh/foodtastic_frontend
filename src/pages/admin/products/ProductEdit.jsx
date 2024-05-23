@@ -163,7 +163,7 @@ export default function ProductEdit() {
           <select
             value={product.category_id}
             onChange={handleChange}
-            name="categorie"
+            name="category_id"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
           >
             <option value="">Select a category</option>
@@ -182,7 +182,7 @@ export default function ProductEdit() {
           <select
             value={product.producer_id}
             onChange={handleChange}
-            name="producer"
+            name="producer_id"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
           >
             <option value="">Select a producer</option>
