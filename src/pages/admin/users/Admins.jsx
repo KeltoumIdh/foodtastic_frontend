@@ -24,32 +24,35 @@ export const Admins = () => {
     const { toast } = useToast();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchAdmins = async () => {
-            try {
-                const response = await axios.get("/api/admins");
-                if (response.status === 200) {
-                    setAdmins(response?.data);
-                } else {
-                    throw new Error("Failed to fetch admins");
-                }
-            } catch (error) {
-                console.error("Error fetching admins:", error);
+    const fetchAdmins = async () => {
+        try {
+            const response = await axios.get("/api/admins");
+            if (response.status === 200) {
+                setAdmins(response?.data);
+            } else {
+                throw new Error("Failed to fetch admins");
             }
-        };
+        } catch (error) {
+            console.error("Error fetching admins:", error);
+        }
+    };
+
+    useEffect(() => {
 
         fetchAdmins();
     }, []);
 
     const deleteAdmin = async (adminId) => {
         try {
-            const response = await axios.delete(`/admins/delete/${adminId}`);
-            if (response.status === 204) {
+            const response = await axios.delete(`/api/admins/delete/${adminId}`);
+            if (response.status === 200) {
 
                 toast({
                     title: "Success",
                     description: "Admin deleted successfully!",
                 });
+
+                fetchAdmins()
             }
         } catch (error) {
             console.error("Error deleting admin:", error);
