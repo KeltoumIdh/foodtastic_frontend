@@ -41,12 +41,12 @@ export function StockCard() {
     <ScrollArea className="h-full w-100 rounded-md border bg-gray-50">
       <div className="p-4  ">
         <h4 className="mb-4 text-lg font-medium leading-none py-4">
-          Produit en rupture de stock
+        Products Out of Stock
         </h4>
 
         <div className="flex flex-row justify-between">
-          <div className="text-sm font-medium">Nom du Produit</div>
-          <div className="text-sm font-medium">Quantité Disponible</div>
+          <div className="text-sm font-medium">Product Name</div>
+          <div className="text-sm font-medium">Quantity Available</div>
           <div className="text-sm font-medium">Statut</div>
         </div>
         <Separator className="my-2" />

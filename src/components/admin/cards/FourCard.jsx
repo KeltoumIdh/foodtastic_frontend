@@ -119,13 +119,13 @@ export const FourCard = () => {
 
       <Card className="h-[100%] w-[100%] bg-yellow-100">
         <CardHeader className="flex flex-row justify-between items-center">
-          <h2 className="text-xl">Users</h2>
+          <h2 className="text-xl">Admins</h2>
           <UsersRound strokeWidth={1.5} />
         </CardHeader>
         <CardContent className="flex flex-row justify-between items-center">
           <div>
-            <p className="text-lg">Total Users</p>
-            <CardDescription>{totalU} Users</CardDescription>
+            <p className="text-lg">Total Admins</p>
+            <CardDescription>{totalU} Admin</CardDescription>
           </div>
         </CardContent>
       </Card>

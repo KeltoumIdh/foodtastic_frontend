@@ -19,13 +19,14 @@ const Dashboard = () => {
         <div className="h-auto mb-2 w-full">
           <FourCard />
         </div>
+        <div className="flex max-md:flex-col h-auto w-full space-x-2">
+          <ChartCard />
+        </div>
         <div className="h-auto w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
           <div className="flex flex-col h-auto ">
             <StockCard />
           </div>
-          <div className="flex flex-col h-auto ">
-            <ChartCard />
-          </div>
+
           {/* <div className="flex flex-col h-auto ">
             <ListCard />
           </div> */}
