@@ -1,9 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
+import { isNull } from '../lib/utils';
 
 const CartTotals = () => {
 
   const { cartItems } = useSelector(state => state.cart);
+
+  const CanOrder = !isNull(cartItems);
 
   const calculateTotalPrice = (products) => {
     return products.reduce((total, product) => {
@@ -13,7 +16,7 @@ const CartTotals = () => {
   
   const totalPrice = parseFloat(calculateTotalPrice(cartItems));
   const tax = totalPrice * 20 / 100;
-  const shipping = 50;
+  const shipping = CanOrder ? 50 : 0;
   const finalTotalPrice = Math.round(totalPrice + shipping + tax);
 
   return (
