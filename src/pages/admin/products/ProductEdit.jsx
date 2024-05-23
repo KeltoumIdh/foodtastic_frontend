@@ -15,12 +15,30 @@ export default function ProductEdit() {
   const navigate = useNavigate();
   const [product, setProduct] = useState({
     name: "",
-    categorie: "",
-    producer: "",
+    category_id: "",
+    producer_id: "",
     price: "",
     quantity_available: "",
+    city_id: "",
     image: "",
   });
+
+
+  const [cities, setCities] = useState([]);
+  const fetchCities = async () => {
+    try {
+      const response = await axios.get("/api/cities");
+      setCities(response.data);
+    } catch (error) {
+      console.error("Failed to fetch cities", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCities();
+  }, []);
+
+  
   const [categories, setCategories] = useState([]);
   const [producers, setProducers] = useState([]);
   const [newImage, setNewImage] = useState({});
@@ -28,35 +46,38 @@ export default function ProductEdit() {
 
   const { register, handleSubmit } = useForm();
 
+
+  const fetchProduct = async () => {
+    try {
+      // const response = await axios.post(`/api/products/edit/${id}`);
+      const response = !isNull(id) ? await axios.post(`/api/products/edit/${id}`) : {};
+      console.log('response.data', response.data)
+      if (response.status === 200) {
+        setProduct(response.data);
+      } else {
+        throw new Error("Failed to fetch product data");
+      }
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+
+
+  const fetchOptions = async () => {
+    try {
+      const [categoriesResponse, producersResponse] = await Promise.all([
+        axios.get("/api/categories"),
+        axios.get("/api/producers"),
+      ]);
+      setCategories(categoriesResponse.data);
+      setProducers(producersResponse.data);
+    } catch (error) {
+      console.error("Failed to fetch options", error);
+    }
+  };
+
+
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        // const response = await axios.post(`/api/products/edit/${id}`);
-        const response = !isNull(id) ? await axios.post(`/api/products/edit/${id}`) : {};
-
-        if (response.status === 200) {
-          setProduct(response.data);
-        } else {
-          throw new Error("Failed to fetch product data");
-        }
-      } catch (error) {
-        console.error("Error fetching product data:", error);
-      }
-    };
-
-    const fetchOptions = async () => {
-      try {
-        const [categoriesResponse, producersResponse] = await Promise.all([
-          axios.get("/api/categories"),
-          axios.get("/api/producers"),
-        ]);
-        setCategories(categoriesResponse.data);
-        setProducers(producersResponse.data);
-      } catch (error) {
-        console.error("Failed to fetch options", error);
-      }
-    };
-
     fetchProduct();
     fetchOptions();
   }, [id]);
@@ -73,16 +94,24 @@ export default function ProductEdit() {
       [name]: value,
     }));
   };
+  
+  const handleChangeCity = (e) => {
+    setProduct({...product, city_id: e.target.value });
+  };
 
   const onSubmit = async (data) => {
     try {
       setInProgress(true);
 
       const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
+      formData.append("name", product.name);
+      formData.append("category_id", product.category_id);
+      formData.append("producer_id", product.producer_id);
+      formData.append("price", product.price);
+      formData.append("city_id", product.city_id);
+      formData.append("quantity_available", product.quantity_available);
       formData.append("image", newImage);
+
       const response = !isNull(id) ? await axios.post(`/api/products/update/${id}`, formData) : {};
     //   const response = await axios.post(`/api/products/update/${id}`, formData);
 
@@ -132,7 +161,7 @@ export default function ProductEdit() {
             Categorie
           </label>
           <select
-            value={product.categorie}
+            value={product.category_id}
             onChange={handleChange}
             name="categorie"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
@@ -151,7 +180,7 @@ export default function ProductEdit() {
             Producer
           </label>
           <select
-            value={product.producer}
+            value={product.producer_id}
             onChange={handleChange}
             name="producer"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
@@ -192,7 +221,23 @@ export default function ProductEdit() {
           />
         </div>
 
-
+        <div className="mb-3">
+            <label htmlFor="city" className="block mb-1 max-md:text-sm">
+              Available in
+            </label>
+            <select
+              value={product.city_id}
+              onChange={handleChangeCity}
+              className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
+            >
+              <option value="">Select a city</option>
+              {cities?.map((city) => (
+                <option key={city.id} value={city.id}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <label htmlFor="image" className="block mb-1 max-md:text-sm">
