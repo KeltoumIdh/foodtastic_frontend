@@ -33,6 +33,7 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [producers, setProducers] = useState([]);
+  const [cities, setCities] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -76,6 +77,7 @@ function Products() {
       setTotalProducts(totalProductsCount);
       getCategories();
       getProducers();
+      getCities();
     } catch (err) {
       console.log("err", err);
     }
@@ -108,6 +110,14 @@ function Products() {
       console.log("err", err);
     }
   };
+  const getCities = async () => {
+    try {
+      const res = await axios.get("/api/cities");
+      setCities(res.data);
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/api/products/delete/${id}`);
@@ -125,7 +135,7 @@ function Products() {
   return (
     <>
       <div className="flex p-2 justify-between">
-        <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
+        <h4 className="lg:text-2xl text-lg font-semibold ">
           Products
         </h4>
         <button
@@ -142,7 +152,7 @@ function Products() {
         <select
           value={searchStatus}
           onChange={(e) => setSearchStatus(e.target.value)}
-          className="bg-gray-50 w-fit border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  md:p-2.5 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 w-fit border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  md:p-2.5 p-1 "
         >
           <option value="">All</option>
           <option value="Disponible">Disponible</option>
@@ -180,7 +190,7 @@ function Products() {
               onChange={handleChangeSearch}
               type="search"
               id="default-search"
-              className="block w-full lg:px-4 md:py-3 p-2 ps-10 md:text-sm text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full px-4 md:py-3 p-2 ps-10 md:text-sm text-xs text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  "
               placeholder="Recherche par nom du produit ou reference."
               required
             />
@@ -204,6 +214,7 @@ function Products() {
             <TableHead>Status</TableHead>
             <TableHead>categorie</TableHead>
             <TableHead>producer</TableHead>
+            <TableHead>city</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -247,6 +258,11 @@ function Products() {
                 <TableCell className="max-md:p-2 text-center">
                   {producers.find(
                     (producer) => producer.id === product.producer_id
+                  )?.name || "N/A"}
+                </TableCell>
+                <TableCell className="max-md:p-2 text-center">
+                  {cities.find(
+                    (city) => city.id === product.city_id
                   )?.name || "N/A"}
                 </TableCell>
                 <TableCell className="max-md:p-2 flex items-center h-full">

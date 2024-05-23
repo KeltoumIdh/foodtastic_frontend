@@ -91,7 +91,7 @@ export default function ProductEdit() {
           title: "Success",
           description: "Product updated successfully!",
         });
-        navigate("/products");
+        navigate("/dashboard/products");
       }
     } catch (error) {
       console.error("Error updating product:", error);
@@ -109,7 +109,7 @@ export default function ProductEdit() {
     <>
       <div className="flex items-center p-2">
         <ReturnBackBtn />
-        <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
+        <h4 className="lg:text-2xl text-lg font-semibold ">
           Modifier produit
         </h4>
       </div>

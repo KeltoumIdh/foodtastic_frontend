@@ -12,6 +12,7 @@ function ProductsAdd() {
   const [images, setImages] = useState([]);
   const [producers, setProducers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [cities, setCities] = useState([]);
 
   const methods = useForm();
   const navigate = useNavigate();
@@ -23,7 +24,18 @@ function ProductsAdd() {
     setError,
     reset,
   } = methods;
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get("/api/cities");
+        setCities(response.data);
+      } catch (error) {
+        console.error("Failed to fetch cities", error);
+      }
+    };
 
+    fetchCities();
+  }, []);
   useEffect(() => {
     // Fetch producers and categories
     const fetchOptions = async () => {
@@ -54,6 +66,7 @@ function ProductsAdd() {
     formData.append("categorie", parseInt(values.categorie, 10));
     formData.append("producer", parseInt(values.producer, 10));
     formData.append("quantity", parseInt(values.quantity, 10));
+    formData.append("city", parseInt(values.city, 10));
     formData.append("price", parseFloat(values.price)); // Convert to float
     for (const imagez of images) {
       formData.append('images[]', imagez);
@@ -72,7 +85,7 @@ function ProductsAdd() {
           description: "Product created successfully!",
         });
         reset();
-        // navigate("/dashboard/products");
+        navigate("/dashboard/products");
       }
     } catch (error) {
       console.error("Request failed:", error);
@@ -93,7 +106,7 @@ function ProductsAdd() {
     <>
       <div className="flex items-center p-2">
         <ReturnBackBtn />
-        <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
+        <h4 className="lg:text-2xl text-lg font-semibold ">
           Ajouter produit
         </h4>
       </div>
@@ -180,6 +193,25 @@ function ProductsAdd() {
             </select>
             <span className="text-red-500">
               {errors.producer && errors.producer.message}
+            </span>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="city" className="block mb-1 max-md:text-sm">
+              Available in
+            </label>
+            <select
+              {...register("city", { required: "city is required" })}
+              className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
+            >
+              <option value="">Select a city</option>
+              {cities?.map((city) => (
+                <option key={city.id} value={city.id}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
+            <span className="text-red-500">
+              {errors.city && errors.city.message}
             </span>
           </div>
 
