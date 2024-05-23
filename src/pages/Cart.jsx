@@ -19,7 +19,6 @@ const Cart = () => {
 
   // order 
   const handleOrderButton = async (e) => {
-    
     try {
       setIsLoading(true)
 
@@ -29,7 +28,14 @@ const Cart = () => {
         auth_user: Number(localStorage.getItem("id"))
       });
 
-      console.log('data', data)
+      const url = 'http://127.0.0.1:8000/' + data.file_path;
+
+      // Create a temporary link element
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("target", `_blank`);
+      document.body.appendChild(link);
+      link.click();
 
       setIsLoading(false)
     } catch (error) {
