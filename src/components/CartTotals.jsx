@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import { isNull } from '../lib/utils';
 
-const CartTotals = () => {
+const CartTotals = ({ setFinalPrice }) => {
 
   const { cartItems } = useSelector(state => state.cart);
 
@@ -18,6 +18,8 @@ const CartTotals = () => {
   const tax = totalPrice * 20 / 100;
   const shipping = CanOrder ? 50 : 0;
   const finalTotalPrice = Math.round(totalPrice + shipping + tax);
+
+  setFinalPrice(finalTotalPrice)
 
   return (
     <div className='card bg-base-200'>
