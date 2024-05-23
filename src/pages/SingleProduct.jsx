@@ -39,14 +39,18 @@ const SingleProduct = () => {
   ]);
 
   const [productData, setProductData] = useState({});
+  const [inProgress, setInProgress] = useState(false)
 
   const { product_id } = useLoaderData();
 
   const getProductData = async (_id) => {
-    const response = !isNull(_id)
-      ? await axios.get(`/api/products/${_id}`)
-      : {};
+    setInProgress(true)
+
+    const response = !isNull(_id) ? await axios.get(`/api/products/${_id}`): {};
+
     setProductData(response?.data?.product ?? []);
+
+    setInProgress(false)
   };
 
   useEffect(() => {
@@ -66,7 +70,6 @@ const SingleProduct = () => {
     isInWishList: false,
   };
 
-  console.log("productData", productData);
 
   for (let i = 0; i < productData?.rating; i++) {
     rating[i] = "full star";
@@ -118,7 +121,7 @@ const SingleProduct = () => {
     toast.success("Product removed from the wishlist!");
   };
 
-  return (
+  return inProgress ? suspense() : (
     <>
       <SectionTitle title="Product page" path="Home | Shop | Product page" />
       <div className="grid grid-cols-2 gap-4 lg:gap-8 max-w-7xl mx-auto my-10 max-lg:grid-cols-1 px-2 lg:px-4 xl:px-6">
@@ -221,3 +224,13 @@ const SingleProduct = () => {
 };
 
 export default SingleProduct;
+
+
+// suspense/loader
+const suspense = () => {
+  return (
+    <div className="w-full h-[60vh] flex flex-col items-center justify-center">
+      <div className="animate-pulse">Wait...</div>
+    </div>
+  )
+}

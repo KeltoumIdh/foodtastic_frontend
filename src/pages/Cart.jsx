@@ -20,6 +20,8 @@ const Cart = () => {
     }
   }
 
+  console.log('cartItems',cartItems)
+
   return (
     <>
       <SectionTitle title="Cart" path="Home | Cart" />
