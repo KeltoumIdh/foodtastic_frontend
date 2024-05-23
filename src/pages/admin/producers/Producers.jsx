@@ -117,7 +117,7 @@ function Producers() {
   return (
     <>
       <div className="flex p-2 justify-between">
-        <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
+        <h4 className="lg:text-2xl text-lg font-semibold ">
           Producers
         </h4>
         <button

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Button } from "../../../components/ui/button.jsx";
 import { Loader } from "lucide-react";
@@ -8,28 +8,24 @@ import axios from "../../../lib/axios.jsx";
 import ReturnBackBtn from "../../../components/Shared/ReturnBackBtn.jsx";
 
 export default function ProducerEdit() {
-    const { id } = useParams();
+  const { id } = useParams();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [producer, setProducer] = useState({
+    id: "",
     name: "",
-    categorie: "",
-    producer: "",
-    price: "",
-    quantity_available: "",
-    image: "",
+    contact_info: "",
+    city_id: "",
   });
-  const [categories, setCategories] = useState([]);
-  const [producers, setProducers] = useState([]);
-  const [newImage, setNewImage] = useState({});
+  const [cities, setCities] = useState([]);
   const [isProgress, setInProgress] = useState(false);
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   useEffect(() => {
     const fetchProducer = async () => {
       try {
-        const response = await axios.post(`/api/producers/edit/${id}`);
+        const response = await axios.get(`/api/producers/edit/${id}`);
         if (response.status === 200) {
           setProducer(response.data);
         } else {
@@ -40,27 +36,18 @@ export default function ProducerEdit() {
       }
     };
 
-    const fetchOptions = async () => {
+    const fetchCities = async () => {
       try {
-        const [categoriesResponse, producersResponse] = await Promise.all([
-          axios.get("/api/categories"),
-          axios.get("/api/producers"),
-        ]);
-        setCategories(categoriesResponse.data);
-        setProducers(producersResponse.data);
+        const response = await axios.get("/api/cities");
+        setCities(response.data);
       } catch (error) {
-        console.error("Failed to fetch options", error);
+        console.error("Failed to fetch cities", error);
       }
     };
 
     fetchProducer();
-    fetchOptions();
+    fetchCities();
   }, [id]);
-
-  const handleFileChange = (event) => {
-    const newImage = event.target.files[0];
-    if (newImage) setNewImage(newImage);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,19 +62,18 @@ export default function ProducerEdit() {
       setInProgress(true);
 
       const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-      formData.append("image", newImage);
+      formData.append("name", producer.name);
+      formData.append("contact_info", producer.contact_info);
+      formData.append("city_id", producer.city_id);
 
-      const response = await axios.post(`/api/producers/update/${id}`, formData);
+      const response = await axios.put(`/api/producers/update/${id}`, formData);
 
       if (response.status === 200) {
         toast({
           title: "Success",
           description: "Producer updated successfully!",
         });
-        navigate("/producers");
+        navigate(-1);
       }
     } catch (error) {
       console.error("Error updating producer:", error);
@@ -105,8 +91,8 @@ export default function ProducerEdit() {
     <>
       <div className="flex items-center p-2">
         <ReturnBackBtn />
-        <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
-          Modifier produit
+        <h4 className="lg:text-2xl text-lg font-semibold ">
+          Modifier producer
         </h4>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 p-2">
@@ -122,90 +108,41 @@ export default function ProducerEdit() {
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
           />
         </div>
-
         <div className="mb-3">
-          <label htmlFor="categorie" className="block mb-1 max-md:text-sm">
-            Categorie
+          <label htmlFor="contact_info" className="block mb-1 max-md:text-sm">
+            Contact info *
+          </label>
+          <input
+            placeholder="Contact info"
+            value={producer.contact_info}
+            onChange={handleChange}
+            name="contact_info"
+            className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="city_id" className="block mb-1 max-md:text-sm">
+            City
           </label>
           <select
-            value={producer.categorie}
+            name="city_id"
+            value={producer.city_id}
             onChange={handleChange}
-            name="categorie"
             className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
+            {...register("city_id", { required: "City is required" })}
           >
-            <option value="">Select a category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
+            <option value="">Select a city</option>
+            {cities.map((city) => (
+              <option key={city.id} value={city.id}>
+                {city.name}
               </option>
             ))}
           </select>
+          {errors.city_id && <span className="text-red-500">{errors.city_id.message}</span>}
         </div>
-
-        <div className="mb-3">
-          <label htmlFor="producer" className="block mb-1 max-md:text-sm">
-            Producer
-          </label>
-          <select
-            value={producer.producer}
-            onChange={handleChange}
-            name="producer"
-            className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
-          >
-            <option value="">Select a producer</option>
-            {producers.map((producer) => (
-              <option key={producer.id} value={producer.id}>
-                {producer.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="price" className="block mb-1 max-md:text-sm">
-            Price *
-          </label>
-          <input
-            type="number"
-            placeholder="Price"
-            value={producer.price}
-            onChange={handleChange}
-            name="price"
-            className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
-          />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="quantity_available" className="block mb-1 max-md:text-sm">
-            Quantity *
-          </label>
-          <input
-            placeholder="Quantity"
-            value={producer.quantity_available}
-            onChange={handleChange}
-            name="quantity_available"
-            className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
-          />
-        </div>
-
-
-
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <label htmlFor="image" className="block mb-1 max-md:text-sm">
-            Image
-          </label>
-          <input
-            name="image"
-            type="file"
-            onChange={handleFileChange}
-            className="w-full md:p-2 px-2 py-1 max-md:text-xs border border-gray-300 rounded"
-            accept="image/png,image/jpeg,image/jpg"
-          />
-        </div>
-
         <Button className="mt-3 max-md:text-sm max-md:p-2" type="submit">
           {isProgress && <Loader className={"mx-2 my-2 animate-spin"} />}
-          modifier
+          Modifier
         </Button>
       </form>
     </>

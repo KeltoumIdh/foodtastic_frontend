@@ -63,7 +63,7 @@ export default function ChartCard() {
     const quantitiesSold = products.map(product => product.quantity_sold);
 
     return (
-        <Card className="h-[100%] w-[100%]">
+        <Card className="h-[100%] w-[100%] bg-gray-50">
       <h4 className="mb-4 text-lg font-medium leading-none p-4 ">Produit plus vende</h4>
             <BarChart
                 series={[{ data: quantitiesSold }]}

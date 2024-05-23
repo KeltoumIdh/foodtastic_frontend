@@ -13,11 +13,7 @@ export default function CategoryEdit() {
   const navigate = useNavigate();
   const [category, setCategory] = useState({
     name: "",
-    categorie: "",
-    producer: "",
-    price: "",
-    quantity_available: "",
-    image: "",
+
   });
   const [categories, setCategories] = useState([]);
   const [producers, setProducers] = useState([]);
@@ -29,9 +25,10 @@ export default function CategoryEdit() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await axios.post(`/api/Categories/edit/${id}`);
+        const response = await axios.post(`/api/categories/edit/${id}`);
+
         if (response.status === 200) {
-          setCategory(response.data);
+          setCategory(response?.data?.category);
         } else {
           throw new Error("Failed to fetch category data");
         }
@@ -68,14 +65,13 @@ export default function CategoryEdit() {
       });
       formData.append("image", newImage);
 
-      const response = await axios.post(`/api/Categories/update/${id}`, formData);
-
+      const response = await axios.post(`/api/categories/update/${id}`, formData);
       if (response.status === 200) {
         toast({
           title: "Success",
           description: "Category updated successfully!",
         });
-        navigate("/Categories");
+        navigate("/dashboard/categories");
       }
     } catch (error) {
       console.error("Error updating category:", error);
@@ -93,7 +89,7 @@ export default function CategoryEdit() {
     <>
       <div className="flex items-center p-2">
         <ReturnBackBtn />
-        <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
+        <h4 className="lg:text-2xl text-lg font-semibold ">
           Modifier categorie
         </h4>
       </div>

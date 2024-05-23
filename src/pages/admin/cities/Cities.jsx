@@ -111,7 +111,7 @@ function Cities() {
       </div>
 
 
-      <Table>
+      <Table className='w-1/2 '>
         <TableHeader>
           <TableRow>
             <TableHead>City</TableHead>

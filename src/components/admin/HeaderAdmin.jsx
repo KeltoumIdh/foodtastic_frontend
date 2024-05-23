@@ -61,13 +61,14 @@ const HeaderAdmin = () => {
 
   return (
     <>
-      <div className="navbar bg-base-100 max-w-7xl mx-auto">
+      <div className="navbar  max-w-7xl mx-auto">
         <div className="flex-1">
           <Link
             to="/"
             className="btn btn-ghost normal-case text-2xl font-black text-accent-content"
           >
-            <AiFillShopping />
+            {/* <AiFillShopping /> */}
+            <img src="../2-removebg-preview.png" alt="" className="w-12"/>
             Foodtastic
           </Link>
         </div>
@@ -109,13 +110,13 @@ const HeaderAdmin = () => {
         </div>
       </div>
 
-      <div className="navbar-bottom-menu border-y border-gray-800">
+      <div className="navbar-bottom-menu border-y bg-green-50 max-md:p-2 max-md:mb-2 border-gray-800">
         <div className="drawer">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
             {/* Page content here */}
-            <label htmlFor="my-drawer" className="btn drawer-button">
-              <HiMiniBars3BottomLeft className="text-4xl" />
+            <label htmlFor="my-drawer" className="btn drawer-button p-3">
+              <HiMiniBars3BottomLeft className="text-xl" />
             </label>
           </div>
           <div className="drawer-side z-10">
@@ -125,38 +126,38 @@ const HeaderAdmin = () => {
               className="drawer-overlay"
             ></label>
 
-            <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content mt-4">
+            <ul className="menu p-4 w-80 min-h-full text-green-700 font-semibold bg-base-200  mt-4">
               <label htmlFor="my-drawer" className="btn drawer-button">
                 <FaWindowClose className="text-3xl ml-auto" />
               </label>
               {/* Sidebar content here */}
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="admin">
+                <NavLink className="text-accent-content text-green-700" to="admin">
                   Dashboard
                 </NavLink>
               </li>
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="products">
+                <NavLink className="text-accent-content text-green-700" to="products">
                   Products
                 </NavLink>
               </li>
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="categories">
+                <NavLink className="text-accent-content text-green-700" to="categories">
                   Categories
                 </NavLink>
               </li>
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="producers">
+                <NavLink className="text-accent-content text-green-700" to="producers">
                   Producers
                 </NavLink>
               </li>
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="producers">
+                <NavLink className="text-accent-content text-green-700" to="producers">
                   Cities
                 </NavLink>
               </li>
               <li className="text-sm">
-                <NavLink className="text-accent-content" to="admins">
+                <NavLink className="text-accent-content text-green-700" to="admins">
                   Admins
                 </NavLink>
               </li>
@@ -164,23 +165,23 @@ const HeaderAdmin = () => {
           </div>
         </div>
 
-        <div className="container text-md navlinks-container">
-          <NavLink className="text-accent-content" to="admin">
+        <div className="container text-md navlinks-container font-semibold">
+          <NavLink className="text-accent-content text-green-700" to="admin">
             Dashboard
           </NavLink>
-          <NavLink className="text-accent-content" to="products">
+          <NavLink className="text-accent-content text-green-700" to="products">
             Products
           </NavLink>
-          <NavLink className="text-accent-content" to="categories">
+          <NavLink className="text-accent-content text-green-700" to="categories">
             Categories
           </NavLink>
-          <NavLink className="text-accent-content" to="producers">
+          <NavLink className="text-accent-content text-green-700" to="producers">
             Producers
           </NavLink>
-          <NavLink className="text-accent-content" to="cities">
+          <NavLink className="text-accent-content text-green-700" to="cities">
             Cities
           </NavLink>
-          <NavLink className="text-accent-content" to="admins">
+          <NavLink className="text-accent-content text-green-700" to="admins">
             Admins
           </NavLink>
         </div>

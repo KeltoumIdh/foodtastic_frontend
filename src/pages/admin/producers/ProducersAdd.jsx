@@ -88,7 +88,7 @@ function ProducersAdd() {
     <>
       <div className="flex items-center p-2">
         <ReturnBackBtn />
-        <h4 className="lg:text-2xl text-lg font-semibold dark:text-gray-300">
+        <h4 className="lg:text-2xl text-lg font-semibold ">
           Ajouter producer
         </h4>
       </div>

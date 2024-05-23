@@ -36,13 +36,13 @@ const AdminEdit = () => {
 
   const updateAdmin = async () => {
     try {
-      const response = await axios.put(`/api/admins/update/${id}`, adminData);
+      const response = await axios.put(`/api/admins/${id}`, adminData);
       if (response.status === 200) {
         toast({
           title: "Success",
           description: "Admin updated successfully!",
         });
-        navigate('/admin/list')
+        navigate('/dashboard/admins')
       }
     } catch (error) {
       console.error("Error updating admin:", error);
@@ -60,7 +60,7 @@ const AdminEdit = () => {
   return (
     <div className="w-full">
       <div className="flex items-center p-2">
-        <Link to={"/admin/list"} className="mr-2">
+        <Link to={"/dashboard/admins"} className="mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -76,7 +76,7 @@ const AdminEdit = () => {
             />
           </svg>
         </Link>
-        <h2 className="text-2xl font-semibold dark:text-gray-300">
+        <h2 className="text-2xl font-semibold ">
           Modifier admin
         </h2>
       </div>
@@ -107,7 +107,7 @@ const AdminEdit = () => {
           onChange={handleChange}
         />
       </div>
-      <div>
+      {/* <div>
         <label>Password</label>
         <Input
           type="password"
@@ -115,7 +115,7 @@ const AdminEdit = () => {
           value={adminData.password}
           onChange={handleChange}
         />
-      </div>
+      </div> */}
       <div className="py-4">
         <Button onClick={updateAdmin}>Update Admin</Button>
       </div>
