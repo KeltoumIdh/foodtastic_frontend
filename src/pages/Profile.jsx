@@ -8,14 +8,14 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const [id, setId] = useState(localStorage.getItem("id"));
   const [userData, setUserData] = useState({});
+  const [cities, setCities] = useState([]);
   const loginState = useSelector((state) => state.auth.isLoggedIn);
   const wishItems = useSelector((state) => state.wishlist.wishItems);
   const [userFormData, setUserFormData] = useState({
     id: "",
     name: "",
-    lastname: "",
     email: "",
-    phone: "",
+    city: "",
     adress: "",
     password: "",
   });
@@ -27,20 +27,27 @@ const Profile = () => {
       const data = response.data;
       setUserFormData({
         name: data.name,
-        lastname: data.lastname,
+        city: data.city,
         email: data.email,
-        phone: data.phone,
-        adress: data.adress,
+        adress: data.address,
         password: data.password,
       });
     } catch (error) {
       toast.error("Error: ", error.response);
     }
   };
-
+  const fetchCities = async () => {
+    try {
+      const response = await axios.get("/api/cities");
+      setCities(response.data);
+    } catch (error) {
+      console.error("Failed to fetch cities", error);
+    }
+  };
   useEffect(() => {
     if (loginState) {
       getUserData();
+      fetchCities();
     } else {
       toast.error("You must be logged in to access this page");
       navigate("/");
@@ -52,25 +59,34 @@ const Profile = () => {
     try {
       const getResponse = await axios.get(`/api/user/${id}`);
       const userObj = getResponse.data;
-
-      // saljemo get(default) request
       const putResponse = await axios.put(`/api/user/${id}`, {
         id: id,
         name: userFormData.name,
-        lastname: userFormData.lastname,
         email: userFormData.email,
-        phone: userFormData.phone,
+        city: userFormData.city,
         adress: userFormData.adress,
         password: userFormData.password,
         userWishlist: await userObj.userWishlist,
         //userWishlist treba da stoji ovde kako bi sacuvao stanje liste zelja
       });
+      console.log('updated',putResponse.data);
       const putData = putResponse.data;
     } catch (error) {
       console.log(error.response);
     }
   };
 
+  const deleteAccount = async () => {
+    try {
+      await axios.delete(`/api/user/${id}`);
+      toast.success("Account deleted successfully");
+      localStorage.removeItem("id");
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to delete account", error);
+      toast.error("Failed to delete account");
+    }
+  };
   return (
     <>
       <SectionTitle title="User Profile" path="Home | User Profile" />
@@ -139,21 +155,39 @@ const Profile = () => {
             />
           </div> */}
 
-          <div className="form-control w-full lg:max-w-xs">
+          {/* <div className="form-control w-full lg:max-w-xs">
             <label className="label">
-              <span className="label-text">Your Adress</span>
+              <span className="label-text">City</span>
             </label>
             <input
               type="text"
               placeholder="Type here"
               className="input input-bordered w-full lg:max-w-xs"
-              value={userFormData.adress}
+              value={userFormData.city}
               onChange={(e) => {
-                setUserFormData({ ...userFormData, adress: e.target.value });
+                setUserFormData({ ...userFormData, city: e.target.value });
               }}
             />
+          </div> */}
+          <div className="form-control w-full lg:max-w-xs">
+            <label className="label">
+              <span className="label-text">Your City</span>
+            </label>
+            <select
+              className="select select-bordered w-full lg:max-w-xs"
+              value={userFormData.adress}
+              onChange={(e) => setUserFormData({ ...userFormData, adress: e.target.value })}
+            >
+              <option value="" disabled>
+                Select your city
+              </option>
+              {cities.map((city) => (
+                <option key={city.id} value={city.name}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
           </div>
-
           {/* <div className="form-control w-full lg:max-w-xs">
             <label className="label">
               <span className="label-text">Your Password</span>
@@ -174,6 +208,13 @@ const Profile = () => {
           type="submit"
         >
           Update Profile
+        </button>
+        <button
+          type="button"
+          className="btn btn-lg bg-red-600 hover:bg-red-500 text-white mt-10 ml-4"
+          onClick={deleteAccount}
+        >
+          Delete Account
         </button>
       </form>
     </>
