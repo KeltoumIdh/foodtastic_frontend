@@ -15,7 +15,6 @@ import {
   OrderHistory,
   Login,
 } from "./pages";
-import { landingLoader } from "./pages/Landing";
 import { singleProductLoader } from "./pages/SingleProduct";
 import { shopLoader } from "./pages/Shop";
 import { ToastContainer } from "react-toastify";
@@ -45,7 +44,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
-        loader: landingLoader,
       },
       {
         path: "shop",
@@ -110,7 +108,6 @@ const router = createBrowserRouter([
       // {
       //   index: true,
       //   element: <Landing />,
-      //   loader: landingLoader,
       // },
       {
         path: "admin",

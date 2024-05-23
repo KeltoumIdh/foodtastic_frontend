@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SectionTitle } from "../components";
 import { nanoid } from "nanoid";
@@ -7,14 +7,26 @@ import axios from "../lib/axios";
 
 const Register = () => {
   const [name, setName] = useState("");
-  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [phone, setPhone] = useState("");
   const [adress, setAdress] = useState("");
+  const [cities, setCities] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get("/api/cities");
+        setCities(response.data);
+      } catch (error) {
+        console.error("Failed to fetch cities", error);
+      }
+    };
+
+    fetchCities();
+  }, []);
 
   const isValidate = () => {
     let isProceed = true;
@@ -23,10 +35,10 @@ const Register = () => {
     if (name.length === 0) {
       isProceed = false;
       errorMessage = "Please enter the value in username field";
-    }  else if (email.length === 0) {
+    } else if (email.length === 0) {
       isProceed = false;
       errorMessage = "Please enter the value in email field";
-    }  else if (password.length < 6) {
+    } else if (password.length < 6) {
       isProceed = false;
       errorMessage = "Please enter a password longer than 5 characters";
     } else if (confirmPassword.length < 6) {
@@ -68,6 +80,7 @@ const Register = () => {
         });
     }
   };
+
   return (
     <>
       <SectionTitle title="Register" path="Home | Register" />
@@ -100,13 +113,20 @@ const Register = () => {
               <label className="font-semibold text-sm pb-1 block text-accent-content">
                 City
               </label>
-              <input
-                type="text"
+              <select
                 className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
                 value={adress}
                 onChange={(e) => setAdress(e.target.value)}
                 required={true}
-              />
+              >
+                <option value="">Select a city</option>
+                {cities.map((city) => (
+                  <option key={city.id} value={city.name}>
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+
               <label className="font-semibold text-sm pb-1 block text-accent-content">
                 Password
               </label>
