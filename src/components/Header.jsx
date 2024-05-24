@@ -83,7 +83,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex-none">
-          <Link
+          {/* <Link
             to="/search"
             className="btn btn-ghost btn-circle text-accent-content"
           >
@@ -101,19 +101,19 @@ const Header = () => {
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-          </Link>
+          </Link> */}
           <button
             className="text-accent-content btn btn-ghost btn-circle text-xl"
             onClick={() => dispatch(changeMode())}
           >
             {darkMode ? <FaSun /> : <FaMoon />}
           </button>
-          <Link
+          {/* <Link
             to="/wishlist"
             className="btn btn-ghost btn-circle text-accent-content"
           >
             <FaHeart className="text-xl" />
-          </Link>
+          </Link> */}
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
               <div className="indicator">

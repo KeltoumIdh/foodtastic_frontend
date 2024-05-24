@@ -1,71 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormInput from "./FormInput";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import FormRange from "./FormRange";
 import FormSelect from "./FormSelect";
 import FormDatePicker from "./FormDatePicker";
 import FormCheckbox from "./FormCheckbox";
+import axios from "../lib/axios";
 
-const Filters = () => {
-  const [selectCategoryList, setSelectCategoryList] = useState([
-    "all",
-    "shoes",
-    "slippers",
-    "heels",
-    "t-shirts",
-    "jackets",
-    "caps",
-    "shorts",
-    "sweaters",
-    "sneakers",
-    "shirts",
-    "boots",
-    "overshirts",
-    "pants",
-    "jeans",
-    "socks",
-    "belts",
-    "trainers",
-  ]);
-  const [selectBrandList, setSelectBrandList] = useState([
-    "all",
-    "WALK LONDON",
-    "Reebok",
-    "Nike",
-    "Jack & Jones",
-    "Crocs",
-    "Vans",
-    "Puma",
-    "New Balance",
-    "Tommy Jeans",
-    "Tommy Hilfiger",
-    "Bershka",
-    "New Look",
-    "AllSaints",
-    "Columbia",
-    "The North Face",
-    "Collusion",
-    "ASOS DESIGN",
-    "Topman",
-    "Dr Denim",
-    "Polo Ralph Lauren",
-    "ASOS Dark Future",
-    "Levi's",
-    "Threadbare",
-    "Calvin Klein",
-    "AAPE BY A BATHING APE®",
-    "Good For Nothing",
-    "Timberland",
-    "Pull and Bear",
-    "Koi Footwear",
-    "adidas performance",
-    "Nike Running",
-    "Dr Martens",
-    "River Island",
-  ]);
+const Filters = ({ value, handleChangeValue }) => {
+  const [cities, setCities] = useState([]);
+  const [selectCategoryList, setSelectCategoryList] = useState([]);
+  // console.log(cities);
+  // console.log(selectCategoryList);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get("/api/cities");
+        const cityNames = response.data.map((city) => city.name);
+        setCities(cityNames);
+      } catch (error) {
+        console.error("Failed to fetch cities", error);
+      }
+    };
+    fetchCities();
+  }, []);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("/api/categories");
+        const categNames = response.data.map((city) => city.name);
+
+        setSelectCategoryList(categNames);
+      } catch (error) {
+        console.error("Failed to fetch Categories", error);
+      }
+    };
+    fetchCategories();
+  });
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const query = new URLSearchParams({
+      search: value.search,
+      category: value.category,
+      city: value.city,
+      price: value.price,
+    }).toString();
+
+    navigate(`/shop?${query}`);
+  };
   return (
-    <Form className="bg-base-200 rounded-md px-8 py-4 grid gap-x-4  gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center">
+    <Form
+      onSubmit={handleSubmit}
+      className="bg-base-200 rounded-md px-8 py-4 grid gap-x-4  gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center"
+    >
       {/* SEARCH */}
       <FormInput
         type="search"
@@ -73,6 +64,8 @@ const Filters = () => {
         name="search"
         size="input-sm"
         defaultValue=""
+        value={value.search}
+        handleChangeValue={handleChangeValue}
       />
       {/* CATEGORIES */}
       <FormSelect
@@ -81,46 +74,27 @@ const Filters = () => {
         list={selectCategoryList}
         size="select-sm"
         defaultValue="all"
+        value={value.category}
+        handleChangeValue={handleChangeValue}
       />
-      {/* COMPANIES */}
+      {/* Cities */}
       <FormSelect
-        label="select brand"
-        name="brand"
-        list={selectBrandList}
+        label="select city"
+        name="city"
+        list={cities}
         size="select-sm"
         defaultValue="all"
+        value={value.city}
+        handleChangeValue={handleChangeValue}
       />
-      {/* ORDER */}
-      <FormSelect
-        label="sort by"
-        name="order"
-        list={["asc", "desc", "price high", "price low"]}
-        size="select-sm"
-        defaultValue="a-z"
-      />
-      {/* Producer */}
-      <FormSelect
-        label="Select gender"
-        name="gender"
-        list={["all", "male", "female"]}
-        size="select-sm"
-        defaultValue="all"
-      />
+
       {/* PRICE */}
       <FormRange
         name="price"
         label="select price"
         size="range-sm"
-        price={2000}
-      />
-      {/* Date Picker */}
-      <FormDatePicker label="select minimum production date" name="date" />
-
-      {/* In stock */}
-      <FormCheckbox
-        label="Only products in stock"
-        name="stock"
-        defaultValue="false"
+        value={value.price}
+        handleChangeValue={handleChangeValue}
       />
 
       {/* BUTTONS */}

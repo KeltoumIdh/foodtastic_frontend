@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 
 const ProductElement = ({ id, title, image, rating, price, brandName }) => {
-  
+
   return (
     <div className="max-w-2xl">
       <div className="shadow-md rounded-lg max-w-sm bg-base-100">
@@ -22,7 +22,7 @@ const ProductElement = ({ id, title, image, rating, price, brandName }) => {
             </h3>
           </Link>
           <div className="flex items-center justify-between">
-            <span className="text-3xl font-bold text-accent-content">${price}</span>
+            <span className="text-3xl font-bold text-accent-content">MAD {price}</span>
           </div>
         </div>
       </div>
