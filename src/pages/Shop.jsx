@@ -15,6 +15,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { nanoid } from "nanoid";
+import { useSelector } from "react-redux";
 
 export const shopLoader = async ({ request }) => {
   const params = Object.fromEntries([
@@ -94,6 +95,7 @@ const Shop = () => {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState("");
   const [city, setCity] = useState("");
+  const [authCity, setAuthCity] = useState("");
   const [categories, setCategories] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
@@ -151,9 +153,9 @@ const Shop = () => {
         params: {
           search: searchQuery || "",
           city:
-          // queryParams.get("city")
-          //   ? queryParams.get("city")
-          //   :
+            // queryParams.get("city")
+            //   ? queryParams.get("city")
+            //   :
             filterCity || "",
           price: price || "",
         },
@@ -172,6 +174,43 @@ const Shop = () => {
   const handleChangeSearch = (event) => {
     setSearchQuery(event.target.value);
   };
+
+  const loginState = useSelector((state) => state.auth.isLoggedIn);
+
+  useEffect(() => {
+    const getuser = async () => {
+      if (loginState) {
+        try {
+          const getResponse = await axios.get(
+            `/api/user/${localStorage.getItem("id")}`
+          );
+          const userObj = getResponse.data;
+          console.log("userObj", userObj);
+          setAuthCity(userObj.address);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+    getuser();
+  }, [loginState]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const cityFromUrl = queryParams.get("city");
+
+    if (loginState && authCity) {
+      const authCityObj = cities.find((city) => city.name === authCity);
+      if (authCityObj) {
+        setFilterCity(authCityObj.id);
+      }
+    } else if (!loginState && cityFromUrl) {
+      const urlCityObj = cities.find((city) => city.name === cityFromUrl);
+      if (urlCityObj) {
+        setFilterCity(urlCityObj.id);
+      }
+    }
+  }, [loginState, authCity, cities, location.search]);
   return (
     <>
       <SectionTitle title="Shop" path="Home | Shop" />
@@ -191,12 +230,22 @@ const Shop = () => {
             onChange={(e) => setFilterCity(e.target.value)}
             className="bg-gray-50 w-fit border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block md:p-2.5 p-1"
           >
-            <option value="">All Cities</option>
-            {cities.map((city) => (
-              <option key={city.id} value={city.id}>
-                {city.name}
+            {loginState ? (
+              <option value={filterCity}>{authCity}</option>
+            ) : !loginState && filterCity ? (
+              <option value={filterCity}>
+                {cities.find((city) => city.id === filterCity)?.name}
               </option>
-            ))}
+            ) : (
+              <>
+                <option value="">All Cities</option>
+                {cities.map((city) => (
+                  <option key={city.id} value={city.id}>
+                    {city.name}
+                  </option>
+                ))}
+              </>
+            )}
           </select>
           {/* <select
             value={filterCateg}
@@ -266,7 +315,7 @@ const Shop = () => {
             </div>
           </form>
         </div>
-        {products?.productsData?.length === 0 && (
+        {products?.length === 0 && (
           <h2 className="text-accent-content text-center text-4xl my-10">
             No products found for this filter
           </h2>
@@ -278,7 +327,7 @@ const Shop = () => {
                 key={`product_${product?.id}`}
                 id={product?.id}
                 title={product?.name}
-                image={product?.imageUrl}
+                image={product?.image}
                 rating={product?.rating}
                 price={product?.price}
                 brandName={product?.brandName}

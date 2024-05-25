@@ -224,7 +224,7 @@ function Products() {
               <TableRow key={product.id}>
                 <TableCell className="flex items-center max-md:p-2">
                   <img
-                    src={`/api/assets/uploads/products/${product.image}`}
+                    src={`${product.image}`}
                     alt="avatar"
                     width="40px"
                     height="40px"

@@ -52,7 +52,7 @@ const SingleProductReviews = ({ rating, productData }) => {
                 key={product.id}
                 id={product.id}
                 title={product.name}
-                image={product.imageUrl}
+                image={product.image}
                 rating={product.rating}
                 price={product.price}
               />

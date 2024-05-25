@@ -39,18 +39,20 @@ const SingleProduct = () => {
   ]);
 
   const [productData, setProductData] = useState({});
-  const [inProgress, setInProgress] = useState(false)
+  const [inProgress, setInProgress] = useState(false);
 
   const { product_id } = useLoaderData();
 
   const getProductData = async (_id) => {
-    setInProgress(true)
+    setInProgress(true);
 
-    const response = !isNull(_id) ? await axios.get(`/api/products/${_id}`): {};
+    const response = !isNull(_id)
+      ? await axios.get(`/api/products/${_id}`)
+      : {};
 
     setProductData(response?.data?.product ?? []);
 
-    setInProgress(false)
+    setInProgress(false);
   };
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const SingleProduct = () => {
   const product = {
     id: productData?.id,
     title: productData?.name,
-    image: productData?.imageUrl,
+    image: productData?.image,
     rating: productData?.rating,
     price: productData?.price?.current?.value,
     brandName: productData?.brandName,
@@ -69,7 +71,6 @@ const SingleProduct = () => {
     // isInWishList: wishItems?.find((item) => item.id === productData?.id),
     isInWishList: false,
   };
-
 
   for (let i = 0; i < productData?.rating; i++) {
     rating[i] = "full star";
@@ -121,17 +122,18 @@ const SingleProduct = () => {
     toast.success("Product removed from the wishlist!");
   };
 
-  return inProgress ? suspense() : (
+  return inProgress ? (
+    suspense()
+  ) : (
     <>
       <SectionTitle title="Product page" path="Home | Shop | Product page" />
       <div className="grid grid-cols-2 gap-4 lg:gap-8 max-w-7xl mx-auto my-10 max-lg:grid-cols-1 px-2 lg:px-4 xl:px-6">
         <div className="product-images flex flex-col justify-center max-lg:justify-start bg-blue-300">
-          {/* <img
-                        src={`https://${productData?.additionalImageUrls[currentImage]}`}
-                        className="w-96 text-center border border-gray-600 cursor-pointer"
-                        alt={productData.name}
-                    /> */}
-          <div className="w-full h-96 text-center bg-gray-200 border border-gray-600 cursor-pointer"></div>
+          <img
+            src={`${productData?.image}`}
+            className="w-full text-center border border-gray-600 cursor-pointer"
+            alt={productData.name}
+          />
         </div>
         <div className="single-product-content flex flex-col gap-y-5 max-lg:mt-2">
           <h2 className="text-5xl max-sm:text-3xl text-accent-content">
@@ -157,19 +159,22 @@ const SingleProduct = () => {
                 max={productData?.quantity_available}
               />
             </div>
+            {productData?.status}
           </div>
           <div className="flex flex-row gap-x-2 max-sm:flex-col max-sm:gap-x">
             <button
-              className="btn bg-blue-600 hover:bg-blue-500 text-white"
+              className={`btn bg-blue-600 hover:bg-blue-500 text-white `}
               onClick={() => {
                 if (loginState) {
-                  dispatch(addToCart({
-                    id: productData?.id,
-                    name: productData?.name,
-                    price: productData?.price,
-                    image: productData?.image,
-                    quantity: quantity
-                  }));
+                  dispatch(
+                    addToCart({
+                      id: productData?.id,
+                      name: productData?.name,
+                      price: productData?.price,
+                      image: productData?.image,
+                      quantity: quantity,
+                    })
+                  );
                 } else {
                   toast.error(
                     "You must be logged in to add products to the cart"
@@ -225,12 +230,11 @@ const SingleProduct = () => {
 
 export default SingleProduct;
 
-
 // suspense/loader
 const suspense = () => {
   return (
     <div className="w-full h-[60vh] flex flex-col items-center justify-center">
       <div className="animate-pulse">Wait...</div>
     </div>
-  )
-}
+  );
+};
